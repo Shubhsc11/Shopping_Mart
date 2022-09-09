@@ -1,0 +1,49 @@
+<head>
+  <style type="text/css">
+    h3{
+      font-size: 15pt;
+      font-family: sans-serif;
+    }
+    #div1{
+      background-color: lightyellow; 
+      width: 50%;
+      border-radius: 20%;
+    }
+  </style>
+</head>
+
+<body>
+  <center>
+    <div class="container-fluid" id="div1">
+      <h1 style="text-decoration-line: underline;">Product Details</h1>
+      <br>  
+
+      <h3>Product Name => <%= @product.p_name %></h3>
+
+      <h3>Product Price => <%= @product.p_price %></h3>
+
+      <h3>Product Qty. => <%= @product.p_qty %></h3>
+    </div>
+
+  <br>
+  <br>
+
+    <div class="container">
+      <div class="row">
+        <div class="col sm-3">
+         <h4><%= link_to "Edit Product", edit_product_path(@product) %></h4>
+        </div>
+
+        <div class="col sm-3">
+          <h4><%= link_to "Delete Product", product_path(@product), data: { turbo_method: :delete,   turbo_confirm: "Are you sure?" } %></h4>
+        </div>
+
+        <div class="col sm-3">
+          <h4><%= link_to "List of Product", products_path %></h4>
+        </div>
+      </div>
+    </div>
+  </center>
+  
+</body>
+
