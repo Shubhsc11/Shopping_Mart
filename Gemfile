@@ -80,3 +80,4 @@ gem 'byebug'
 gem "pg", "~> 1.1"
 gem 'activeadmin'
 gem 'bootstrap-sass'
+gem 'cancancan'
