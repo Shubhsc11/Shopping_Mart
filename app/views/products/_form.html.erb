@@ -1,6 +1,7 @@
+
 <%= form_with model: product do |form| %>
   <div>
-    <%= form.label :Product_name %><br>
+    <%= form.label :product_name %><br>
     <%= form.text_field :p_name %>
     <% @product.errors.full_messages_for(:p_name).each do |message| %>
       <div><%= message %></div>
@@ -9,7 +10,7 @@
   </div>
 
   <div>
-    <%= form.label :Product_Price %><br>
+    <%= form.label :product_price %><br>
     <%= form.text_area :p_price %><br>
     <% @product.errors.full_messages_for(:p_price).each do |message| %>
       <div><%= message %></div>
@@ -17,7 +18,7 @@
   </div>
 
   <div>
-    <%= form.label :Product_Qty %><br>
+    <%= form.label :product_pty %><br>
     <%= form.text_area :p_qty %><br>
     <% @product.errors.full_messages_for(:p_qty).each do |message| %>
       <div><%= message %></div>

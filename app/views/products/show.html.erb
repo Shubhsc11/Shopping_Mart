@@ -5,9 +5,19 @@
       font-family: sans-serif;
     }
     #div1{
-      background-color: lightyellow; 
+      background-color: yellow;
+      padding: 20px;
+      margin: 25px; 
       width: 50%;
-      border-radius: 20%;
+      border-radius: 15px;
+    }
+
+    #div2{
+      background-color: yellow;
+      padding: 20px;
+      margin: 25px; 
+      width: 50%;
+      border-radius: 15px;
     }
   </style>
 </head>
@@ -23,24 +33,28 @@
       <h3>Product Price => <%= @product.p_price %></h3>
 
       <h3>Product Qty. => <%= @product.p_qty %></h3>
+      <br>
     </div>
 
   <br>
   <br>
 
-    <div class="container">
+    <div class="container" id="div2">
       <div class="row">
         <div class="col sm-3">
          <h4><%= link_to "Edit Product", edit_product_path(@product) %></h4>
         </div>
+        <hr>
 
         <div class="col sm-3">
-          <h4><%= link_to "Delete Product", product_path(@product), data: { turbo_method: :delete,   turbo_confirm: "Are you sure?" } %></h4>
+          <h4><%= link_to "Delete Product", product_path(@product), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %></h4>
         </div>
+        <hr>
 
         <div class="col sm-3">
           <h4><%= link_to "List of Product", products_path %></h4>
         </div>
+        <hr>
       </div>
     </div>
   </center>

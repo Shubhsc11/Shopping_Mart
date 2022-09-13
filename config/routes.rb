@@ -6,11 +6,17 @@ Rails.application.routes.draw do
 
   root "products#index"
   # resources :accounts
-  resources :homes, only: [:index]
   resources :products
+  resources :homes, only: [:index]
   resources :offers, only: [:index]
   resources :about_us, only: [:index]
-  resources :contact_us, only: [:index]
+  resources :contacts
+
+  # resource :users do
+  #   resources :products
+  # end
+
+  # <root>/users/:user_id/products/:id
 
   # get "/products/offers", to: "products#offers"
 

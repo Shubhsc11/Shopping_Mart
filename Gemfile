@@ -75,9 +75,10 @@ end
 # gem 'devise'
 
 gem "devise", "~> 4.8.1"
-gem 'rubocop-rails'
 gem 'byebug'
 gem "pg", "~> 1.1"
 gem 'activeadmin'
 gem 'bootstrap-sass'
 gem 'cancancan'
+gem 'rubocop-rails', require: false
+
