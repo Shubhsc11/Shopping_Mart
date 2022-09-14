@@ -21,27 +21,27 @@ class ContactsController < ApplicationController
     end
   end
 
-  # def edit
-  #   @contact = Contact.find(params[:id])
-  # end
+  def edit
+    @contact = Contact.find(params[:id])
+  end
 
-  # def update
-  #   @contact = Contact.find(params[:id])
+  def update
+    @contact = Contact.find(params[:id])
 
-  #   if @contact.update(contact_params)
-  #   	# flash[:alert] = "Updates Successfully!!!"
-  #     redirect_to @contact
-  #   else
-  #     render :edit, status: :unprocessable_entity
-  #   end
-  # end
+    if @contact.update(contact_params)
+    	# flash[:alert] = "Updates Successfully!!!"
+      redirect_to @contact
+    else
+      render :edit, status: :unprocessable_entity
+    end
+  end
 
-  # def destroy
-  #   @contact = Contact.find(params[:id])
-  #   @contact.destroy
+  def destroy
+    @contact = Contact.find(params[:id])
+    @contact.destroy
 
-  #   redirect_to root_path, status: :see_other
-  # end
+    redirect_to root_path, status: :see_other
+  end
 
   private
     def contact_params

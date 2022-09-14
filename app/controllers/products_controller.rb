@@ -23,10 +23,12 @@ class ProductsController < ApplicationController
 
   def edit
     @product = Product.find(params[:id])
+    @categories = Category.all.map{|c| [ c.category_name, c.id ] }
   end
 
   def update
     @product = Product.find(params[:id])
+    @product.category_id = params[:category_id]
 
     if @product.update(product_params)
     	flash[:alert] = "Updates Successfully!!!"
@@ -45,6 +47,10 @@ class ProductsController < ApplicationController
 
   private
     def product_params
-      params.require(:product).permit(:p_name, :p_price, :p_qty, :user_id)
+      params.require(:product).permit(:p_name, :p_price, :p_qty, :category_id, :subcategory_id, :user_id)
+    end
+
+    def find_product
+      @product = Product.find(params[:id])
     end
 end

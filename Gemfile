@@ -78,7 +78,9 @@ gem "devise", "~> 4.8.1"
 gem 'byebug'
 gem "pg", "~> 1.1"
 gem 'activeadmin'
+gem 'sass-rails', '~> 6.0'
 gem 'bootstrap-sass'
 gem 'cancancan'
 gem 'rubocop-rails', require: false
+
 

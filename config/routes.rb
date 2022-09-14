@@ -11,6 +11,8 @@ Rails.application.routes.draw do
   resources :offers, only: [:index]
   resources :about_us, only: [:index]
   resources :contacts
+  resources :categories
+  resources :subcategories
 
   # resource :users do
   #   resources :products

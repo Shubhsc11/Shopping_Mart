@@ -2,6 +2,31 @@
 ActiveAdmin.register_page "Dashboard" do
   menu priority: 1, label: proc { I18n.t("active_admin.dashboard") }
 
+
+  # link_to "View Products", admin_products_path
+
+  # index "Recent Products" do
+  #   table_for Product.order("id desc").limit(2).each do |product|
+  #     column (:id) {|product| link_to(product.id, admin_products_path(product)) }
+  #     column :p_name
+  #     column :created_at
+  #   end
+  #   strong { link_to "View All Products", admin_products_path}
+  # end
+
+  # column do
+  #   column do
+  #     panel "Recent Products" do
+  #       table_for Product.order("id desc").limit(2).each do |product|
+  #         column (:id) {|product| link_to(product.id, admin_products_path(product)) }
+  #         column :p_name
+  #         column :created_at
+  #       end
+  #       strong { link_to "View All Products", admin_products_path}
+  #     end
+  #   end
+  # end
+
   # content title: proc { I18n.t("active_admin.dashboard") } do
   #   div class: "blank_slate_container", id: "dashboard_default_message" do
   #     span class: "blank_slate" do
