@@ -14,6 +14,17 @@ Rails.application.routes.draw do
   resources :categories
   resources :subcategories
 
+  post 'order_items' => "order_items#create"
+
+  get 'order_items/:id' => "order_items#show"
+  delete 'order_items/:id' => "order_items#destroy"
+
+  post 'order_items/:id/add' => "order_items#add_quantity", as: "order_item_add"
+  post 'order_items/:id/reduce' => "order_items#reduce_quantity", as: "order_item_reduce"
+
+  resources :orders
+  resources :order_items
+
   # resource :users do
   #   resources :products
   # end

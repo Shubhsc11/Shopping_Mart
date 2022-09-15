@@ -1,0 +1,28 @@
+<h1>Hello Order Items</h1>
+
+<h2>Order show</h2>
+<ul>
+	<% byebug %>
+  <% @order.order_items.each do |order_item| %>
+    <li>Item: <%= order_item.product.p_name %></li>
+    <li>Price: <%= order_item.product.p_price %></li> 
+    <li>Quantity: <%= order_item.quantity %></li> 
+    <li>Total Price: <%= order_item.total_price %></li>
+
+    <ul>
+      <li>
+        <%= link_to "Add one", order_item_add_path(:id => order_item), method: :post %>
+        <%= link_to "Reduce one", order_item_reduce_path(:id => order_item), method: :post %>
+      </li>
+      <li>
+        <%= link_to "Remove item", order_item_path(order_item), method: :delete %>
+      </li>
+    </ul>
+  <% end %>
+</ul>
+<h3>Sub total: <%= @order.sub_total %></h3>
+
+<%= link_to "Proceed to checkout", new_order_path %><br>
+
+<%= link_to "Empty order", order_path(@current_order),method: :delete, 
+data: {confirm: "Are you sure?"} %>

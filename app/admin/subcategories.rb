@@ -1,5 +1,4 @@
 ActiveAdmin.register Subcategory do
-
   permit_params do
     permitted = [:subcategory_name, :description, :category_id]
   end
@@ -14,7 +13,9 @@ ActiveAdmin.register Subcategory do
     column :id
     column :subcategory_name
     column :description
-    column :category_id
+    column :category_id do |c|
+      category = Category.find_by(id: c.category_id).category_name rescue nil
+    end
 
     actions
   end
@@ -27,23 +28,4 @@ ActiveAdmin.register Subcategory do
     end
     actions
   end
-
 end
-
-
-  # See permitted parameters documentation:
-  # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
-  #
-  # Uncomment all parameters which should be permitted for assignment
-  #
-  # permit_params :subcategory_name, :description, :category_id
-  #
-  # or
-  #
-  # permit_params do
-  #   permitted = [:subcategory_name, :description, :category_id]
-  #   permitted << :other if params[:action] == 'create' && current_user.admin?
-  #   permitted
-  # end
-  
-# end

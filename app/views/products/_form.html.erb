@@ -1,50 +1,51 @@
+<div class="container" style="padding: 50px; background-color: #e8c06f; border-radius: 15px;">
+  <%= form_with model: product do |form| %>
+    <div>
+      <%= form.label :Name %><br>
+      <%= form.text_field :p_name %>
+      <% @product.errors.full_messages_for(:p_name).each do |message| %>
+        <div><%= message %></div>
+      <% end %>
+      
+    </div>
 
-<%= form_with model: product do |form| %>
-  <div>
-    <%= form.label :Name %><br>
-    <%= form.text_field :p_name %>
-    <% @product.errors.full_messages_for(:p_name).each do |message| %>
-      <div><%= message %></div>
-    <% end %>
-    
-  </div>
+    <div>
+      <%= form.label :Price %><br>
+      <%= form.text_area :p_price %><br>
+      <% @product.errors.full_messages_for(:p_price).each do |message| %>
+        <div><%= message %></div>
+      <% end %>
+    </div>
 
-  <div>
-    <%= form.label :Price %><br>
-    <%= form.text_area :p_price %><br>
-    <% @product.errors.full_messages_for(:p_price).each do |message| %>
-      <div><%= message %></div>
-    <% end %>
-  </div>
+    <div>
+      <%= form.label :Qty %><br>
+      <%= form.text_area :p_qty %><br>
+      <% @product.errors.full_messages_for(:p_qty).each do |message| %>
+        <div><%= message %></div>
+      <% end %>
+    </div>
 
-  <div>
-    <%= form.label :Qty %><br>
-    <%= form.text_area :p_qty %><br>
-    <% @product.errors.full_messages_for(:p_qty).each do |message| %>
-      <div><%= message %></div>
-    <% end %>
-  </div>
+    <div>
+      <%= form.label :category_id %><br>
+      <%= form.select :category_id, collection: Category.all.map { |a| [a.category_name, a.id] } %><br>
+      <% @product.errors.full_messages_for(:category_id).each do |message| %>
+        <div><%= message %></div>
+      <% end %>
+    </div>
 
-  <div>
-    <%= form.label :category_id %><br>
-    <%= form.select :category_id, collection: Category.all.map { |a| [a.category_name, a.id] } %><br>
-    <% @product.errors.full_messages_for(:category_id).each do |message| %>
-      <div><%= message %></div>
-    <% end %>
-  </div>
+    <div>
+      <%= form.label :subcategory_id %><br>
+      <%= form.select :subcategory_id, 
+      collection: Subcategory.all.map { |a| [a.subcategory_name, a.id] } %><br>
+      <% @product.errors.full_messages_for(:subcategory_id).each do |message| %>
+        <div><%= message %></div>
+      <% end %>
+    </div>
+    <br>
 
-  <div>
-    <%= form.label :subcategory_id %><br>
-    <%= form.select :subcategory_id, 
-    collection: Subcategory.all.map { |a| [a.subcategory_name, a.id] } %><br>
-    <% @product.errors.full_messages_for(:subcategory_id).each do |message| %>
-      <div><%= message %></div>
-    <% end %>
-  </div>
-  <br>
+    <div>
+      <%= form.submit %>
+    </div>
 
-  <div>
-    <%= form.submit %>
-  </div>
-
-<% end %>
+  <% end %>
+</div>

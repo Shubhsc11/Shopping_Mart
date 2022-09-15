@@ -1,0 +1,30 @@
+<body>
+  <div class="container" style="padding: 50px; margin-top: 15px; background-color: #e8c06f; border-radius: 15px;">
+    <center>
+      <h2 style="text-decoration-line: underline;"><%= @category.category_name %></h2>
+    </center>
+
+    <% if @category.subcategories.any? %>
+      <table>
+        <% @category.subcategories.map do |subcategory| %>
+          <th><%= subcategory.subcategory_name %></th>
+            <% subcategory.products.map do |product|%>
+              <td> => <%= link_to product.p_name, products_path %> </td>
+            <% end %>
+        <% end %>
+      </table>
+
+    <% else %>
+      <center><h4>Sorry, No subcategories available.</h4></center>
+    <% end %>
+
+  <br>
+  <br>
+
+  <button class="btn btn-outline-success" style="float: right;">
+    <%= link_to 'Back', root_path %>
+  </button>
+  <br>
+  <br>
+  </div>
+</body>

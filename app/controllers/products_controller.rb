@@ -1,5 +1,7 @@
 class ProductsController < ApplicationController
 
+  before_action :find_product, only: [:show, :edit, :update, :destroy]
+  
   def index
     @products = Product.all.order(created_at: :asc)
   end
@@ -52,5 +54,9 @@ class ProductsController < ApplicationController
 
     def find_product
       @product = Product.find(params[:id])
+    end
+
+    def set_category
+      @category = Category.includes(:products).find(params[:id])
     end
 end
