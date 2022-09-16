@@ -3,7 +3,7 @@ class OrderItem < ApplicationRecord
 	belongs_to :product, foreign_key: :product_id
 
 	def total_price
-    self.item_qty * self.product.p_price
+    self.item_qty * product.p_price
   end
 
 end

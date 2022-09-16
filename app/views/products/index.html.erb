@@ -254,10 +254,8 @@
 						  <td><%= product.p_qty %></td>
 						  <td><%= product&.category&.category_name %></td>
 				  		<td><%= product&.subcategory&.subcategory_name %></td>
-						  <td>
-						  	<p class="btn btn-outline-success">
-						  		<%= link_to "Buy", new_order_item_path(@products) %>
-						  	</p>
+						  <td class="btn btn-outline-success">
+						  <%= button_to "Buy", {:controller => :orders, :action => 'create', :product_id => product.id }, :method => :post %>
 						  </td>
 						</tr>
 						<% end %>

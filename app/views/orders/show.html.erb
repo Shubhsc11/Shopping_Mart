@@ -2,7 +2,6 @@
 <ul>
   <% @order.order_items.each do |order_item| %>
     <li>Item: <%= order_item.product.name %>/ Price: <%= number_to_currency(order_item.product.price) %>/ Quantity: <%= order_item.quantity %>/ Total Price: <%= number_to_currency(order_item.total_price) %>
-
     <ul>
       <li>
         <%= link_to "Add one", order_item_add_path(:id => order_item), method: :post %>

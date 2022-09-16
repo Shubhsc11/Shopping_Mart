@@ -1,6 +1,6 @@
 class ProductsController < ApplicationController
 
-  before_action :find_product, only: [:show, :edit, :update, :destroy]
+  # before_action :find_product, only: %i[show edit update destroy]
   
   def index
     @products = Product.all.order(created_at: :asc)
@@ -25,7 +25,7 @@ class ProductsController < ApplicationController
 
   def edit
     @product = Product.find(params[:id])
-    @categories = Category.all.map{|c| [ c.category_name, c.id ] }
+    @categories = Category.all.map{ |c| [c.category_name, c.id] }
   end
 
   def update
@@ -33,7 +33,6 @@ class ProductsController < ApplicationController
     @product.category_id = params[:category_id]
 
     if @product.update(product_params)
-    	flash[:alert] = "Updates Successfully!!!"
       redirect_to @product
     else
       render :edit, status: :unprocessable_entity
