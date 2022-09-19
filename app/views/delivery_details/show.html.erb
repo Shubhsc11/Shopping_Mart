@@ -1,0 +1,27 @@
+<!-- <center><h2>Your Order Details</h2></center> -->
+
+<div class="container" style="padding: 50px; background-color: #e8c06f; border-radius: 15px;">
+  <h1 style="text-decoration-line: underline; text-align: center;">Your Details</h1>
+  <br>  
+
+  <h3>Full Name => <%= @delivery_detail.full_name %></h3>
+
+  <h3>Address => <%= @delivery_detail.address %></h3>
+
+  <h3>Contact No. => <%= @delivery_detail.contact_no %></h3>
+  <br>
+
+  <div class="row">
+    <div class="col-sm-6" style="text-align: center;">
+      <h4> <%= link_to "Edit Details",  edit_delivery_detail_path %></h4>
+    </div>
+
+	  <div class="col-sm-6" style="text-align: center;">
+	    <h4 class="btn btn-outline-success">
+	      <%= link_to "Book Order", delivery_details_path %>
+	    </h4>
+	  </div>
+	</div>
+
+</div>
+

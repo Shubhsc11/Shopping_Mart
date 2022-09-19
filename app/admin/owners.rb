@@ -4,15 +4,12 @@ ActiveAdmin.register User, :as => 'Owner' do
   end
 
   filter :email
-  # filter :roles
   filter :created_at
 
   index do
     selectable_column
     column "User_Id", :id
-    column "Email", :email
-    # column "User_Role", :roles
-    
+    column "Email", :email  
     actions
   end
 
@@ -21,7 +18,6 @@ ActiveAdmin.register User, :as => 'Owner' do
       input :email
       input :password
       input :password_confirmation
-      # input :roles
     end
     actions
   end

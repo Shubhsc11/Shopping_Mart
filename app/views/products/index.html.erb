@@ -16,54 +16,6 @@
 			border: 2px groove; black;
 		}
 
-		/*.selector-for-some-widget {
-			box-sizing: content-box;
-		}
-
-		.dropdown-submenu{
-			position:relative;
-		}
-		.dropdown-submenu >.dropdown-menu{
-			top:0;
-			left:100%;
-			margin-top:-6px;
-			margin-left:-1px;
-			-webkit-border-radius:0 6px 6px 6px;
-			-moz-border-radius:0 6px 6px 6px;
-			border-radius:0 6px 6px 6px;
-		}
-		.dropdown-submenu:hover>.dropdown-menu{
-			display:block;
-		}
-		.dropdown-submenu>a:after{
-			display:block;
-			content:" ";
-			float:right;
-			width:0;
-			height:0;
-			border-color:transparent;
-			border-style:solid;
-			border-width:5px 0 5px 5px;
-			border-left-color:#cccccc;
-			margin-top:5px;
-			margin-right:-10px;
-		}*/
-		./*dropdown-submenu:hover>a:after{
-			border-left-color:#ffffff;
-		}
-		.dropdown-submenu.pull-left{
-			float:none;
-		}*/
-		/*.dropdown-submenu.pull-left>.dropdown-menu{
-			left:-100%;
-			margin-left:10px;
-			-webkit-border-radius:6px 0 6px 6px;
-			-moz-border-radius:6px 0 6px 6px;
-			border-radius:6px 0 6px 6px;
-		}*/
-
-
-
 	</style>
 </head>
 
@@ -93,90 +45,13 @@
 
 				     	<li><hr class="dropdown-divider"></li>
 	            <li class="dropdown-item" disabled;>Coming Soon More*</li>
-				  	</ul>
-	          		            
-	            <!-- <li class="nav-item dropdown">
-	            	<li class="dropdown-submenu">
-	            		<a class="dropdown-item" href="#">Grocery-Products</a>
-		            		<ul class="dropdown-menu">
-					            <li><a class="dropdown-item" href="#">Rice & Flours</a></li>
-					            <li><a class="dropdown-item" href="#">Pulses/Dals</a></li>
-					            <li><a class="dropdown-item" href="#">Spice-Powders</a></li>
-					            <li><a class="dropdown-item" href="#">Oils</a></li>
-					            <li><a class="dropdown-item" href="#">Sugar, Gud & Mishri</a></li>
-					            <li><a class="dropdown-item" href="#">Other-Ingredients</a></li>
-					          </ul>
-							  </li>
-	            </li> -->
-
-	            <!-- <li class="nav-item dropdown">
-	            	<li class="dropdown-submenu">
-	            		<a class="dropdown-item" href="#">Fruits & Vegetables</a>
-		            		<ul class="dropdown-menu">
-					            <li><a class="dropdown-item" href="#">Freash Fruits</a>
-					            </li>
-					            <li><a class="dropdown-item" href="#">Dry Fruits</a></li>
-					            <li><a class="dropdown-item" href="#">Vegetables</a></li>
-								    </ul>
-							  </li>
-	            </li> -->
-
-	            <!-- <li class="nav-item dropdown">
-	            	<li class="dropdown-submenu">
-	            		<a class="dropdown-item" href="#">Dairy-Products</a>
-		            		<ul class="dropdown-menu">
-					            <li><a class="dropdown-item" href="#">Milk & Milk Powder</a>
-					            </li>
-					            <li><a class="dropdown-item" href="#">Ghee</a></li>
-					            <li><a class="dropdown-item" href="#">Butter</a></li>
-					            <li><a class="dropdown-item" href="#">Bread</a></li>
-					            <li><a class="dropdown-item" href="#">Cheese and Paneer</a></li>
-					            <li><a class="dropdown-item" href="#">Curd, Yogurts & Shrikhand</a></li>
-					            <li><a class="dropdown-item" href="#">Ice-Creams</a></li>
-								    </ul>
-							  </li>
-	            </li> -->
-
-	            <!-- <li class="nav-item dropdown">
-	            	<li class="dropdown-submenu">
-	            		<a class="dropdown-item" href="#">Cleaning-Products</a>
-		            		<ul class="dropdown-menu">
-					            <li><a class="dropdown-item" href="#">Soaps & Shampoo</a>
-					            </li>
-					            <li><a class="dropdown-item" href="#">Washing Powder</a></li>
-					            <li><a class="dropdown-item" href="#">Dish Washing Soaps</a></li>
-					            <li><a class="dropdown-item" href="#">Dettol</a></li>
-					            <li><a class="dropdown-item" href="#">Floor, Car Cleaners</a>
-					            </li>
-					            <li><a class="dropdown-item" href="#">Freshners</a></li>
-					            <li><a class="dropdown-item" href="#">Liquids</a></li>
-								    </ul>
-							  </li>
-	            </li> -->
-
-	            <!-- <li class="nav-item dropdown">
-	            	<li class="dropdown-submenu">
-	            		<a class="dropdown-item" href="#">Electronics</a>
-		            		<ul class="dropdown-menu">
-					            <li><a class="dropdown-item" href="#">Mobiles</a></li>
-					            <li><a class="dropdown-item" href="#">Earphones</a></li>
-					            <li><a class="dropdown-item" href="#">Headphones</a></li>
-					            <li><a class="dropdown-item" href="#">Laptops & Tablets</a></li>
-					            <li><a class="dropdown-item" href="#">Smart Wearables</a></li>
-					            <li><a class="dropdown-item" href="#">Elect.Assecories</a></li>
-					            <li><a class="dropdown-item" href="#">Gadgets</a></li>
-								    </ul>
-							  </li>
-	            </li> -->
-
-	            <!-- <li><hr class="dropdown-divider"></li>
-	            <li class="dropdown-item" disabled;>Coming Soon More*</li> -->
-						<!-- </ul> -->
-
+				  	</ul>		            
 	        </li>
+
 	        <li class="nav-item">
 	          <li class="nav-link"><%= link_to 'About Us', about_us_path %></li>
 	        </li>
+
 	        <li class="nav-item">
 	          <li class="nav-link"><%= link_to 'Contact Us', new_contact_path %></li>
 	        </li>
@@ -216,6 +91,30 @@
 	</nav>
 	<br>
 
+<div style="float: right; margin-right: 20px;">
+	<% if user_signed_in? %>
+		<% if current_user.owner? %>
+			<button type="button" class="btn btn-outline-success" style="margin-left: 20px;">
+			<%= link_to "Create New Product", new_product_path %></button>
+		
+		<% else %>
+			<button type="button" class="btn btn-outline-success" style="margin-left: 20px;">
+			<% if current_user.orders.present? %>
+				<%	item_count = current_user.orders.last.order_items.count %>
+			<% else %>
+				<% item_count = 0 %>
+			<% end %>	
+			<%= link_to "Cart #{item_count}", order_items_path %></button>
+			<br>
+			<br>
+			<h5>Avalaible Points : <%= current_user.points %></h5>
+		<% end %>
+	<% end %>
+</div>
+<br>
+<br>
+
+<div>
 	<center>
 		<h3 style="text-decoration-line: underline;">Products List</h3>
 		<br>
@@ -234,7 +133,7 @@
 				</tr>
 
 				<% if user_signed_in? %>
-					<% if current_user.roles == 'owner' && current_user.products %>
+					<% if current_user.owner? && current_user.products %>
 						<% current_user.products.each do |product|%>
 							<tr>
 							  <td><%= product.p_name %></td>
@@ -255,7 +154,8 @@
 						  <td><%= product&.category&.category_name %></td>
 				  		<td><%= product&.subcategory&.subcategory_name %></td>
 						  <td class="btn btn-outline-success">
-						  <%= button_to "Buy", {:controller => :orders, :action => 'create', :product_id => product.id }, :method => :post %>
+						  <%= button_to "Buy", {:controller => :orders, :product_id => product.id }, 
+						  :method => :post %>
 						  </td>
 						</tr>
 						<% end %>
@@ -273,12 +173,6 @@
 			</table>
 		</div>
 	</center>
+</div>
 
-	<br>
-	<div>
-		<% if user_signed_in? && current_user.owner? %>
-			<button type="button" class="btn btn-outline-success" style="margin-left: 20px;">
-				<%= link_to "Create New Product", new_product_path %></button>
-		<% end %>
-	</div>
 </body>

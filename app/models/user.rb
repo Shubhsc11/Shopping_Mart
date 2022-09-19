@@ -8,12 +8,14 @@ class User < ApplicationRecord
 
   has_many :products, class_name: 'Product', dependent: :destroy
   has_many :orders, class_name: 'Order', dependent: :destroy
-  
-  # after_initialize :set_default_role, :if => :new_record?
+  has_many :delivery_details, class_name: 'DeliveryDetail', dependent: :destroy
 
-  # def set_default_role
-  #   self.roles ||= 'customer'
-  # end
+  after_create :set_credit_points 
 
+  def set_credit_points
+    if self.customer?
+      self.update(points: 5000)
+    end
+  end
 
 end

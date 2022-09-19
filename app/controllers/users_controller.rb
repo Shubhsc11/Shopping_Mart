@@ -25,6 +25,13 @@ class UsersController < ApplicationController
       render :edit, status: :unprocessable_entity
     end
   end
+
+  def add_points
+    if current_user.customer?
+      current_user.update(points: current_user.points + 100)
+      redirect_to order_items_path
+    end
+  end
   
   private
     def user_params

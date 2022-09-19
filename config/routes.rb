@@ -4,12 +4,8 @@ Rails.application.routes.draw do
   # get 'homes/index'
   devise_for :users
 
-  # get 'order', to: 'order#show'
-  # post 'order/add'
-  # post 'order/remove'
 
   root "products#index"
-  # resources :accounts
   resources :products
   resources :homes, only: [:index]
   resources :offers, only: [:index]
@@ -19,23 +15,13 @@ Rails.application.routes.draw do
   resources :subcategories
   resources :orders
   resources :order_items
+  resources :delivery_details
 
   post 'orders', to: "orders#create"
 
-  # get 'order_items/:id' => "order_items#show"
-  # delete 'order_items/:id' => "order_items#destroy"
-
-  # post 'order_items/:id/add' => "order_items#add_quantity", as: "order_item_add"
-  # post 'order_items/:id/reduce' => "order_items#reduce_quantity", as: "order_item_reduce"
-
-
-  # resource :users do
-  #   resources :products
-  # end
-
-  # <root>/users/:user_id/products/:id
-
-  # get "/products/offers", to: "products#offers"
+  post 'order_items/:id/add', to: "order_items#add_quantity", as: "order_item_add"
+  post 'order_items/:id/reduce', to: "order_items#reduce_quantity", as: "order_item_reduce"
+  post 'users/:id/add_point', to: "users#add_points", as: "user_add_points"
 
   devise_scope :user do
     get '/users/sign_out', to: 'devise/sessions#destroy'

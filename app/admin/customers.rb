@@ -4,15 +4,13 @@ ActiveAdmin.register User, :as => 'Customer' do
   end
 
   filter :email
-  # filter :roles
   filter :created_at
 
   index do
     selectable_column
     column "User_Id", :id
     column "Email", :email
-    # column "User_Role", :roles
-
+    column "Points", :points
     actions
   end
 

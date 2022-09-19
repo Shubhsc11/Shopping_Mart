@@ -1,0 +1,38 @@
+<div class="container" style="padding: 50px; background-color: #e8c06f; border-radius: 15px;">
+  <%= form_with model: delivery_detail do |form| %>
+    <div>
+      <%= form.label :full_name %><br>
+      <%= form.text_field :full_name %>
+      <% @delivery_detail.errors.full_messages_for(:full_name).each do |message| %>
+        <div><%= message %></div>
+      <% end %>
+    </div>
+
+    <div>
+      <%= form.label :address %><br>
+      <%= form.text_area :address %><br>
+      <% @delivery_detail.errors.full_messages_for(:address).each do |message| %>
+        <div><%= message %></div>
+      <% end %>
+    </div>
+
+    <div>
+      <%= form.label :contact_no %><br>
+      <%= form.text_area :contact_no %><br>
+      <% @delivery_detail.errors.full_messages_for(:contact_no).each do |message| %>
+        <div><%= message %></div>
+      <% end %>
+    </div>
+
+    <div>
+      <%= form.hidden_field :order_id, value: params['order_id'] %>
+    </div>
+
+    <br>
+
+    <div>
+      <%= form.submit "Submit Details"%>
+    </div>
+
+  <% end %>
+</div>
