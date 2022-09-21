@@ -66,77 +66,74 @@
 
     <div class="container">
       <div class="row">
-      <div class="col-sm-6">
-        
-        <%= form_with model: contact do |form| %>
-          <div>
-            <%= form.label :first_name %><br>
-            <%= form.text_field :first_name %>
-            <% @contact.errors.full_messages_for(:first_name).each do |message| %>
-              <div><%= message %></div>
-            <% end %>
-            
-          </div>
+        <% if user_signed_in? %>
+          <div class="col-sm-6">
+            <%= form_with model: contact do |form| %>
+            <div>
+              <%= form.label :first_name %><br>
+              <%= form.text_field :first_name %>
+              <% @contact.errors.full_messages_for(:first_name).each do |message| %>
+                <div><%= message %></div>
+              <% end %>
+              
+            </div>
 
-          <div>
-            <%= form.label :last_name %><br>
-            <%= form.text_area :last_name %><br>
-            <% @contact.errors.full_messages_for(:last_name).each do |message| %>
-              <div><%= message %></div>
-            <% end %>
-          </div>
+            <div>
+              <%= form.label :last_name %><br>
+              <%= form.text_area :last_name %><br>
+              <% @contact.errors.full_messages_for(:last_name).each do |message| %>
+                <div><%= message %></div>
+              <% end %>
+            </div>
 
-          <div>
-            <%= form.label :email %><br>
-            <%= form.text_area :email %><br>
-            <% @contact.errors.full_messages_for(:email).each do |message| %>
-              <div><%= message %></div>
-            <% end %>
-          </div>
+            <div>
+              <%= form.label :email %><br>
+              <%= form.text_area :email %><br>
+              <% @contact.errors.full_messages_for(:email).each do |message| %>
+                <div><%= message %></div>
+              <% end %>
+            </div>
 
-          <div>
-            <%= form.label :address %><br>
-            <%= form.text_area :address %><br>
-            <% @contact.errors.full_messages_for(:address).each do |message| %>
-              <div><%= message %></div>
-            <% end %>
-          </div>
+            <div>
+              <%= form.label :address %><br>
+              <%= form.text_area :address %><br>
+              <% @contact.errors.full_messages_for(:address).each do |message| %>
+                <div><%= message %></div>
+              <% end %>
+            </div>
 
-          <div>
-            <%= form.label :suggetion %><br>
-            <%= form.text_area :suggetion %><br>
-            <% @contact.errors.full_messages_for(:suggetion).each do |message| %>
-              <div><%= message %></div>
-            <% end %>
-          </div>
+            <div>
+              <%= form.label :suggetion %><br>
+              <%= form.text_area :suggetion %><br>
+              <% @contact.errors.full_messages_for(:suggetion).each do |message| %>
+                <div><%= message %></div>
+              <% end %>
+            </div>
 
-          <div>
-            <button class="btn btn-outline-success" type="submit"><%= form.submit %></button>
-            <br>
-            <br>
-            <button class="btn btn-outline-success">
-              <%= link_to 'Back', root_path%>
-            </button>
+            <div>
+              <button class="btn btn-outline-success" type="submit">
+                <%= form.submit %>
+              </button>
+            </div>
+            <% end %>
           </div>
         <% end %>
-      </div>
 
+        <div class="col-sm-6">
+          <h3>Address:</h3>
+          <p>101, Ramnagar, Near by xyz hospital, Indore-452001, MP</p>
+          <br>
 
-      <div class="col-sm-6">
-        <h3>Address:</h3>
-        <p>101, Ramnagar, Near by xyz hospital, Indore-452001, MP</p>
-        <br>
+          <h2>Contact Details:-</h2>
+          <h3>Email:</h3>
+          <p>xyz@littlestars.com</p>
+          <br>
 
-        <h2>Contact Details:-</h2>
-        <h3>Email:</h3>
-        <p>xyz@littlestars.com</p>
-        <br>
+          <h3>Contact No.:</h3>
+          <p>+91-***********</p>
+          <br>
 
-        <h3>Contact No.:</h3>
-        <p>+91-***********</p>
-        <br>
-
-      </div>
+        </div>
       </div>
     </div>
 
@@ -153,11 +150,20 @@
     </div>
     
     <br>
+
     <div class="container">
       <center>
         © 2022 littlestars.com All Rights Reserved. Powered By 
         <a href="#" target="_blank"> Shriffle IT Solutions.com.</a>
       </center>
+    </div>
+
+    <br>
+
+    <div>
+      <button class="btn btn-outline-success">
+        <%= link_to 'Back', root_path%>
+      </button>
     </div>
   </div>
 </body>

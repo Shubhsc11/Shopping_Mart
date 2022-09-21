@@ -32,12 +32,7 @@ class OrderItemsController < ApplicationController
 	  end
 	  @order_item.save
 	  redirect_to order_items_path
-	end
-
-	# def add_points
-	# 	$points += 100
-	# 	redirect_to order_items_path
-	# end  
+	end 
 
 	private
 	  def order_item_params

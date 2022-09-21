@@ -17,7 +17,6 @@ class DeliveryDetailsController < ApplicationController
 	def create
 		@delivery_detail = current_user.delivery_details.create(delivery_detail_params)
 		if @delivery_detail.save
-			# @current_order.destroy
 			redirect_to @delivery_detail
 		else
 			redirect_to new_delivery_detail_path
@@ -43,7 +42,7 @@ class DeliveryDetailsController < ApplicationController
 		def update_points
 			available_points = current_user.points - @current_order.sub_total
 			current_user.update(points: available_points)
-			byebug
+			@current_order.status = 'shipped'
 		end
 
 		def update_delivery_detail_params
