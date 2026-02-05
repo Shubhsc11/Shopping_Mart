@@ -1,6 +1,5 @@
 ActiveAdmin.register OrderItem do
-
-	actions :all, :except => [:new, :edit, :destroy]
+	actions :all, except: %i[new edit destroy]
 
   # filter :id
   # filter :item_name

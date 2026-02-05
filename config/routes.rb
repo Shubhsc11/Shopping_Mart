@@ -1,13 +1,21 @@
 Rails.application.routes.draw do
+  if Rails.env.development?
+    mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "/graphql"
+  end
+  post "/graphql", to: "graphql#execute"
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
   # get 'homes/index'
   devise_for :users
 
-
   root "products#index"
   resources :products
-  resources :homes, only: [:index]
+  resources :homes, only: :index do
+    collection do
+      get :countries_list
+      get :cities_list
+    end
+  end
   resources :offers, only: [:index]
   resources :about_us, only: [:index]
   resources :contacts
@@ -16,6 +24,9 @@ Rails.application.routes.draw do
   resources :orders
   resources :order_items
   resources :delivery_details
+  resources :payments, only: :index do
+    post :add_new_checkout
+  end
 
   post 'orders', to: "orders#create"
 

@@ -1,5 +1,9 @@
 require_relative "boot"
 
+require 'HyperPay/base'
+require 'HyperPay/copy_and_pay'
+require 'HyperPay/payment_parameter_builder'
+
 require "rails/all"
 
 # Require the gems listed in Gemfile, including any gems

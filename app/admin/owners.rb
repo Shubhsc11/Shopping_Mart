@@ -1,6 +1,6 @@
 ActiveAdmin.register User, :as => 'Owner' do
   permit_params do
-    permitted = [:email, :password, :password_confirmation, :roles]
+    permitted = %i[email password password_confirmation roles]
   end
 
   filter :email
@@ -8,8 +8,8 @@ ActiveAdmin.register User, :as => 'Owner' do
 
   index do
     selectable_column
-    column "User_Id", :id
-    column "Email", :email  
+    column 'User Id', :id
+    column 'Email', :email  
     actions
   end
 
@@ -24,10 +24,8 @@ ActiveAdmin.register User, :as => 'Owner' do
 
   controller do
     def scoped_collection
-      User.where(roles: "owner")
+      User.where(roles: 'owner')
     end
   end
 
 end
-  
-  

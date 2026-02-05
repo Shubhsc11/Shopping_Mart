@@ -1,6 +1,5 @@
 ActiveAdmin.register Order do
-
-  actions :all, :except => [:new, :edit, :destroy]
+  actions :all, except: %i[new edit destroy]
 
   filter :id
   filter :user_id
@@ -8,10 +7,10 @@ ActiveAdmin.register Order do
 
   index do
     selectable_column
-    column "Order Id", :id
+    column 'Order Id', :id
     column :user_id do |u|
       user = User.find_by(id: u.user_id).email rescue nil
     end
-    column "Order Status", :status
+    column 'Order Status', :status
   end  
 end

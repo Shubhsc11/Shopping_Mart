@@ -4,7 +4,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  enum roles: {owner: "owner", customer: "customer"}
+  enum roles: { owner: 'owner', customer: 'customer' }
 
   has_many :products, class_name: 'Product', dependent: :destroy
   has_many :orders, class_name: 'Order', dependent: :destroy

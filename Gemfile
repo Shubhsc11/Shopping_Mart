@@ -1,4 +1,5 @@
 source "https://rubygems.org"
+source 'https://rails-assets.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby "3.0.0"
@@ -83,5 +84,12 @@ gem 'sass-rails', '~> 6.0'
 gem 'bootstrap-sass'
 gem 'cancancan'
 gem 'rubocop-rails', require: false
+gem 'rubycritic'
+gem 'countries'
+gem 'city-state'
+# gem 'countries', require: 'countries/global'
+gem 'HyperPay'
+gem 'graphql'
 
-
+gem "graphiql-rails", group: :development
+gem 'rack-cors'

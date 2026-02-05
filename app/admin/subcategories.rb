@@ -1,7 +1,6 @@
 ActiveAdmin.register Subcategory do
-  
   permit_params do
-    permitted = [:subcategory_name, :description, :category_id]
+    permitted = %i[subcategory_name description category_id]
   end
 
   filter :id
