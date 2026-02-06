@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 class ContactsController < ApplicationController
-	
-	def index
-    @contacts = Contact.all.order(created_at: :asc)
+  def index
+    @contacts = Contact.order(created_at: :asc)
   end
 
   def show
@@ -12,24 +13,24 @@ class ContactsController < ApplicationController
     @contact = Contact.new
   end
 
+  def edit
+    @contact = Contact.find(params[:id])
+  end
+
   def create
     @contact = Contact.new(contact_params)
-    if @contact.save  
+    if @contact.save
       redirect_to @contact
     else
       redirect_to new_contact_path
     end
   end
 
-  def edit
-    @contact = Contact.find(params[:id])
-  end
-
   def update
     @contact = Contact.find(params[:id])
 
     if @contact.update(contact_params)
-    	# flash[:alert] = "Updates Successfully!!!"
+      # flash[:alert] = "Updates Successfully!!!"
       redirect_to @contact
     else
       render :edit, status: :unprocessable_entity
@@ -44,7 +45,8 @@ class ContactsController < ApplicationController
   end
 
   private
-    def contact_params
-      params.require(:contact).permit(:first_name, :last_name, :email, :address, :suggetion)
-    end
+
+  def contact_params
+    params.require(:contact).permit(:first_name, :last_name, :email, :address, :suggetion)
+  end
 end

@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 ActiveAdmin.register OrderItem do
-	actions :all, except: %i[new edit destroy]
+  actions :all, except: %i[new edit destroy]
 
   # filter :id
   # filter :item_name
@@ -14,8 +16,7 @@ ActiveAdmin.register OrderItem do
   #   column :item_qty
   #   column :product_id
   #   column :order_id
-    
+
   #   actions
   # end
-  
 end

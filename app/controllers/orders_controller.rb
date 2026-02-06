@@ -1,5 +1,6 @@
-class OrdersController < ApplicationController
+# frozen_string_literal: true
 
+class OrdersController < ApplicationController
   def index
     @order = Order.all
   end
@@ -18,24 +19,25 @@ class OrdersController < ApplicationController
     quantity = 1
     if current_user.orders.any?
       current_order = current_user.orders.last
-      find_product = current_order.order_items.find_by_product_id(@product.id)
+      find_product = current_order.order_items.find_by(product_id: @product.id)
       if find_product.present?
-        order_item = find_product.update(item_qty: quantity+1)
+        find_product.update(item_qty: quantity + 1)
       else
-        order_item = current_order.order_items.create(product_id: @product.id, item_name: @product.p_name, item_qty: quantity, item_price: @product.p_price * quantity)
+        current_order.order_items.create(product_id: @product.id, item_name: @product.p_name,
+                                         item_qty: quantity, item_price: @product.p_price * quantity)
       end
-      
-      redirect_to root_path
 
+      redirect_to root_path
     else
       @order = Order.create(user_id: current_user.id)
       if @order.save
-        order_item = @order.order_items.create(product_id: @product.id, item_name: @product.p_name, item_qty: quantity, item_price: @product.p_price * quantity)
+        @order.order_items.create(product_id: @product.id, item_name: @product.p_name, item_qty: quantity,
+                                  item_price: @product.p_price * quantity)
         redirect_to '/'
       else
         redirect_to new_order_path
       end
-    end 
+    end
   end
 
   def destroy
@@ -45,8 +47,8 @@ class OrdersController < ApplicationController
   end
 
   private
-    def order_params
-      params.require(:order).permit(:user_id, :status)
-    end
 
+  def order_params
+    params.require(:order).permit(:user_id, :status)
+  end
 end

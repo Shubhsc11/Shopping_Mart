@@ -1,0 +1,55 @@
+# RuboCop Configuration
+plugins:
+  - rubocop-rails
+
+AllCops:
+  SuggestExtensions: false
+  NewCops: enable
+  Exclude:
+    - 'db/**/*'
+    - 'config/**/*'
+    - 'script/**/*'
+    - 'bin/{rails,rake}'
+    - 'vendor/**/*'
+    - 'node_modules/**/*'
+    - 'Gemfile'
+    - 'Gemfile.lock'
+    - 'Rakefile'
+    - 'config.ru'
+    - 'spec/rails_helper.rb'
+    - 'spec/spec_helper.rb'
+    - 'test/**/*'
+    - 'lib/**/*'
+    - 'bin/**/*'
+    - 'app/graphql/**/*'
+    - 'app/helpers/**/*'
+    - 'app/jobs/**/*'
+    - 'app/mailers/**/*'
+    - 'app/services/**/*'
+    - 'app/uploaders/**/*'
+    - 'app/validators/**/*'
+    - 'app/views/**/*'
+    - 'app/channels/**/*'
+    - 'app/controllers/payments_controller.rb'
+    - 'app/controllers/graphql_controller.rb'
+
+# Example configuration for a cop
+Style/Documentation:
+  Enabled: false
+
+Rails/UniqueValidationWithoutIndex:
+  Enabled: false
+
+# You can add more specific exclusions per cop if needed
+# Metrics/MethodLength:
+#   Exclude:
+#     - 'app/models/complex_model.rb'
+
+Metrics/BlockLength:
+  Max: 200
+
+Metrics/AbcSize:
+  Max: 200
+
+Metrics/MethodLength:
+  Max: 50

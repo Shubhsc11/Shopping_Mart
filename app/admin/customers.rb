@@ -1,6 +1,8 @@
-ActiveAdmin.register User, :as => 'Customer' do
+# frozen_string_literal: true
+
+ActiveAdmin.register User, as: 'Customer' do
   permit_params do
-    permitted = [:email, :password, :password_confirmation, :roles]
+    %i[email password password_confirmation roles]
   end
 
   filter :email
@@ -8,13 +10,13 @@ ActiveAdmin.register User, :as => 'Customer' do
 
   index do
     selectable_column
-    column "User_Id", :id
-    column "Email", :email
-    column "Points", :points
+    column 'User_Id', :id
+    column 'Email', :email
+    column 'Points', :points
     actions
   end
 
-  form do |f|
+  form do |_f|
     inputs 'Details' do
       input :email
       input :password
@@ -26,10 +28,7 @@ ActiveAdmin.register User, :as => 'Customer' do
 
   controller do
     def scoped_collection
-      User.where(roles: "customer")
+      User.where(roles: 'customer')
     end
   end
-
 end
-  
-  

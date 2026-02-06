@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ActiveAdmin.register Order do
   actions :all, except: %i[new edit destroy]
 
@@ -9,8 +11,10 @@ ActiveAdmin.register Order do
     selectable_column
     column 'Order Id', :id
     column :user_id do |u|
-      user = User.find_by(id: u.user_id).email rescue nil
+      User.find_by(id: u.user_id).email
+    rescue StandardError
+      nil
     end
     column 'Order Status', :status
-  end  
+  end
 end

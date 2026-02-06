@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ActiveAdmin.register Product do
   actions :all, except: %i[new edit destroy]
 
@@ -12,18 +14,24 @@ ActiveAdmin.register Product do
     selectable_column
     column 'Product Id', :id
     column 'Product Name', :p_name
-    column  'Product Price', :p_price
+    column 'Product Price', :p_price
     column 'Product Qty', :p_qty
     column :category_id do |c|
-      category = Category.find_by(id: c.category_id).category_name rescue nil
+      Category.find_by(id: c.category_id).category_name
+    rescue StandardError
+      nil
     end
     column :subcategory_id do |s|
-      sub_category = Subcategory.find_by(id: s.subcategory_id).subcategory_name rescue nil
+      Subcategory.find_by(id: s.subcategory_id).subcategory_name
+    rescue StandardError
+      nil
     end
     column 'User Id' do |u|
-      user = User.find_by(id: u.user_id).email rescue nil
+      User.find_by(id: u.user_id).email
+    rescue StandardError
+      nil
     end
-    
+
     actions
   end
 end

@@ -1,6 +1,8 @@
-ActiveAdmin.register User, :as => 'Owner' do
+# frozen_string_literal: true
+
+ActiveAdmin.register User, as: 'Owner' do
   permit_params do
-    permitted = %i[email password password_confirmation roles]
+    %i[email password password_confirmation roles]
   end
 
   filter :email
@@ -9,11 +11,11 @@ ActiveAdmin.register User, :as => 'Owner' do
   index do
     selectable_column
     column 'User Id', :id
-    column 'Email', :email  
+    column 'Email', :email
     actions
   end
 
-  form do |f|
+  form do |_f|
     inputs 'Details' do
       input :email
       input :password
@@ -27,5 +29,4 @@ ActiveAdmin.register User, :as => 'Owner' do
       User.where(roles: 'owner')
     end
   end
-
 end

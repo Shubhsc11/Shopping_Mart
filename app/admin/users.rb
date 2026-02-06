@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 ActiveAdmin.register User do
   permit_params do
-    permitted = %i[email password password_confirmation roles]
+    %i[email password password_confirmation roles]
   end
 
   filter :email
@@ -16,7 +18,7 @@ ActiveAdmin.register User do
     actions
   end
 
-  form do |f|
+  form do |_f|
     inputs 'Details' do
       input :email
       input :password

@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class SubcategoriesController < ApplicationController
-	before_action :set_subcategory, only: [:show, :edit, :update, :destroy]
+  before_action :set_subcategory, only: :show
   def index
     @subcategories = Subcategory.all
   end
@@ -8,14 +10,13 @@ class SubcategoriesController < ApplicationController
     @products = @subcategory.products
   end
 
- 	private
+  private
 
-    def set_subcategory
-      @subcategory = Subcategory.includes(:products).find(params[:id])
-    end
+  def set_subcategory
+    @subcategory = Subcategory.includes(:products).find(params[:id])
+  end
 
-
-    def category_params
-      params.require(:category).permit(:subcategory_name, :category_id)
-    end
+  def category_params
+    params.require(:category).permit(:subcategory_name, :category_id)
+  end
 end

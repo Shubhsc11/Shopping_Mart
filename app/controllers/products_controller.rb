@@ -1,9 +1,10 @@
-class ProductsController < ApplicationController
+# frozen_string_literal: true
 
+class ProductsController < ApplicationController
   # before_action :find_product, only: %i[show edit update destroy]
-  
+
   def index
-    @products = Product.all.order(created_at: :asc)
+    @products = Product.order(created_at: :asc)
   end
 
   def show
@@ -14,18 +15,18 @@ class ProductsController < ApplicationController
     @product = Product.new
   end
 
+  def edit
+    @product = Product.find(params[:id])
+    @categories = Category.all.map { |c| [c.category_name, c.id] }
+  end
+
   def create
     @product = current_user.products.build(product_params)
-    if @product.save  
+    if @product.save
       redirect_to @product
     else
       redirect_to new_product_path
     end
-  end
-
-  def edit
-    @product = Product.find(params[:id])
-    @categories = Category.all.map{ |c| [c.category_name, c.id] }
   end
 
   def update
@@ -47,15 +48,16 @@ class ProductsController < ApplicationController
   end
 
   private
-    def product_params
-      params.require(:product).permit(:p_name, :p_price, :p_qty, :category_id, :subcategory_id, :user_id)
-    end
 
-    def find_product
-      @product = Product.find(params[:id])
-    end
+  def product_params
+    params.require(:product).permit(:p_name, :p_price, :p_qty, :category_id, :subcategory_id, :user_id)
+  end
 
-    def set_category
-      @category = Category.includes(:products).find(params[:id])
-    end
+  def find_product
+    @product = Product.find(params[:id])
+  end
+
+  def set_category
+    @category = Category.includes(:products).find(params[:id])
+  end
 end

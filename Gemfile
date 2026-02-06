@@ -73,6 +73,10 @@ group :test do
   gem "webdrivers"
 end
 
+group :development, :test do
+  gem 'rspec-rails', '~> 6.0'
+end
+
 # Installed by myself
 # gem 'devise'
 

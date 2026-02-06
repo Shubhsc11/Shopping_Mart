@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 ActiveAdmin.register Subcategory do
   permit_params do
-    permitted = %i[subcategory_name description category_id]
+    %i[subcategory_name description category_id]
   end
 
   filter :id
@@ -14,7 +16,9 @@ ActiveAdmin.register Subcategory do
     column :subcategory_name
     column :description
     column :category_id do |c|
-      category = Category.find_by(id: c.category_id).category_name rescue nil
+      Category.find_by(id: c.category_id).category_name
+    rescue StandardError
+      nil
     end
 
     actions
@@ -24,7 +28,7 @@ ActiveAdmin.register Subcategory do
     f.inputs 'Details' do
       f.input :subcategory_name
       f.input :description
-      f.input :category_id, :as => :select, collection: Category.all.map { |a| [a.category_name, a.id] }
+      f.input :category_id, as: :select, collection: Category.all.map { |a| [a.category_name, a.id] }
     end
     actions
   end

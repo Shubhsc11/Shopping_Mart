@@ -1,7 +1,8 @@
-ActiveAdmin.register Category do
+# frozen_string_literal: true
 
+ActiveAdmin.register Category do
   permit_params do
-    permitted = [:category_name, :description]
+    %i[category_name description]
   end
 
   filter :id
@@ -11,14 +12,14 @@ ActiveAdmin.register Category do
 
   index do
     selectable_column
-    column "Category Id", :id
-    column "Category Name", :category_name
-    column  "Category Description", :description
+    column 'Category Id', :id
+    column 'Category Name', :category_name
+    column 'Category Description', :description
 
     actions
   end
 
-  form do |f|
+  form do |_f|
     inputs 'Details' do
       input :category_name
       input :description

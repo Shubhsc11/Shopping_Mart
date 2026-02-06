@@ -1,22 +1,20 @@
-class UsersController < ApplicationController
-  
-  def index
-  end
+# frozen_string_literal: true
 
-  def new 
-  end  
-  
-  def create
-  end  
+class UsersController < ApplicationController
+  def index; end
 
   def show
     @user = User.find(params[:id])
   end
-  
+
+  def new; end
+
   def edit
     @user = User.find(params[:id])
   end
-   
+
+  def create; end
+
   def update
     @user = User.find(params[:id])
     if @user.update(user_params)
@@ -27,14 +25,15 @@ class UsersController < ApplicationController
   end
 
   def add_points
-    if current_user.customer?
-      current_user.update(points: current_user.points + 100)
-      redirect_to order_items_path
-    end
+    return unless current_user.customer?
+
+    current_user.update(points: current_user.points + 100)
+    redirect_to order_items_path
   end
-  
+
   private
-    def user_params
-      params.require(:user).permit(:email, :password, :password_confirmation, :roles)
-    end
+
+  def user_params
+    params.require(:user).permit(:email, :password, :password_confirmation, :roles)
+  end
 end
