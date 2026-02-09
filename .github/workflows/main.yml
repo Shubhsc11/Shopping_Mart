@@ -29,7 +29,12 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.0.0
+          bundler-version: 2.5.6
           bundler-cache: true
+      - name: Ensure Bundler and tsort
+        run: |
+          gem install bundler -v 2.5.6
+          gem install tsort -v 0.2.0 || true
       - name: Install dependencies
         run: bundle install --jobs 4 --retry 3
       - name: Wait for PostgreSQL
@@ -58,8 +63,12 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.0.0
+          bundler-version: 2.5.6
           bundler-cache: true
       - name: Install dependencies
-        run: bundle install --jobs 4 --retry 3
+        run: |
+          gem install bundler -v 2.5.6
+          gem install tsort -v 0.2.0 || true
+          bundle install --jobs 4 --retry 3
       - name: Lint Ruby files
         run: bundle exec rubocop --parallel
