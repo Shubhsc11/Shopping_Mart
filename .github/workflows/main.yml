@@ -1,4 +1,4 @@
-name: "Ruby on Rails CI/CD Workflow"
+name: "Ruby on Rails CI"
 
 on:
   push:
