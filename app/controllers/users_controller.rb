@@ -25,6 +25,7 @@ class UsersController < ApplicationController
   end
 
   def add_points
+    authenticate_user!
     return unless current_user.customer?
 
     current_user.update(points: current_user.points + 100)
