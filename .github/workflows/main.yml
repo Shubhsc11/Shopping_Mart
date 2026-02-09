@@ -42,13 +42,11 @@ jobs:
           for i in {1..30}; do
             nc -z localhost 5432 && break || sleep 1
           done
-      # Add or replace database setup steps here
       - name: Set up database
         run: bin/rails db:prepare
       # Add or replace test runners here
-      # - name: Run tests
-      #   run: bundle exec rake
-
+      - name: Run tests
+        run: bundle exec rake
       - name: RuboCop (Code Quality)
         run: bundle exec rubocop --parallel
       - name: Rails boot check

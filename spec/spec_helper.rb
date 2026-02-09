@@ -4,6 +4,15 @@
 # this file to always be loaded, without a need to explicitly require it in any
 # files.
 #
+require 'simplecov'
+require 'shoulda/matchers'
+
+SimpleCov.start do
+  add_group 'Models', 'app/models'
+  add_group 'Controllers', 'app/controllers'
+  add_group 'Admin', 'app/admin'
+end
+
 # Given that it is always loaded, you are encouraged to keep this file as
 # light-weight as possible. Requiring heavyweight dependencies from this file
 # will add to the boot time of your test suite on EVERY test run, even for an

@@ -71,6 +71,8 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
   gem "webdrivers"
+  gem 'simplecov', require: false
+  gem 'shoulda-matchers', '~> 5.0'
 end
 
 group :development, :test do
@@ -91,9 +93,7 @@ gem 'rubocop-rails', require: false
 gem 'rubycritic'
 gem 'countries'
 gem 'city-state'
-# gem 'countries', require: 'countries/global'
 gem 'HyperPay'
 gem 'graphql'
-
 gem "graphiql-rails", group: :development
 gem 'rack-cors'

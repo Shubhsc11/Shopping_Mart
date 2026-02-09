@@ -432,6 +432,8 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2)
     sexp_processor (4.17.4)
+    shoulda-matchers (5.3.0)
+      activesupport (>= 5.2.0)
     simplecov (0.22.0)
       docile (~> 1.1)
       simplecov-html (~> 0.11)
@@ -520,6 +522,8 @@ DEPENDENCIES
   rubycritic
   sass-rails (~> 6.0)
   selenium-webdriver
+  shoulda-matchers (~> 5.0)
+  simplecov
   sprockets-rails
   sqlite3 (~> 1.4)
   stimulus-rails
