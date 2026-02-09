@@ -1,10 +1,14 @@
-name: "Ruby on Rails CI"
+name: "Ruby on Rails CI/CD Workflow"
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+    - '**'
   pull_request:
-    branches: [ "main" ]
+    branches:
+    - '**'
+  tags:
+    - 'release-*'
 
 jobs:
   test:
