@@ -1,10 +1,14 @@
-name: "Ruby on Rails CI"
+name: "Ruby on Rails CI/CD Workflow"
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - "**"
+    tags:
+      - "release-*"
   pull_request:
-    branches: [ "main" ]
+    branches:
+      - "**"
 
 jobs:
   test:
@@ -29,7 +33,6 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.0.0
-          bundler-version: 2.5.6
           bundler-cache: true
       - name: Ensure Bundler and tsort
         run: |
@@ -61,7 +64,6 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.0.0
-          bundler-version: 2.5.6
           bundler-cache: true
       - name: Install dependencies
         run: |
