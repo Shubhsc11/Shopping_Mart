@@ -8,9 +8,31 @@ require 'simplecov'
 require 'shoulda/matchers'
 
 SimpleCov.start do
+  # Minimum coverage required (build will fail if below this)
+  minimum_coverage 70
+
+  # Show warning (yellow) if below this but above minimum
+  minimum_coverage_by_file 70
+
   add_group 'Models', 'app/models'
   add_group 'Controllers', 'app/controllers'
   add_group 'Admin', 'app/admin'
+
+  # Exclude folders
+  add_filter '/spec/'
+  add_filter '/config/'
+  add_filter '/vendor/'
+
+  # Custom HTML thresholds
+  SimpleCov::Formatter::HTMLFormatter.class_eval do
+    def coverage_css_class(coverage)
+      case coverage
+      when 85..100 then 'green'
+      when 75..84 then 'yellow'
+      else 'red'
+      end
+    end
+  end
 end
 
 # Given that it is always loaded, you are encouraged to keep this file as

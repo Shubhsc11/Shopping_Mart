@@ -16,7 +16,7 @@ RSpec.describe 'Categories', type: :request do
 
   describe 'GET /show' do
     it 'returns http success' do
-      category = Category.create!(category_name: 'Test Category')
+      category = create(:category)
       get "/categories/#{category.id}", headers: valid_headers
       expect(response).to have_http_status(:success)
     end
