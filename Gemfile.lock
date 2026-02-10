@@ -178,6 +178,13 @@ GEM
       cgi (>= 0.3.3)
     erubi (1.13.1)
     execjs (2.10.0)
+    factory_bot (6.5.6)
+      activesupport (>= 6.1.0)
+    factory_bot_rails (6.5.0)
+      factory_bot (~> 6.5)
+      railties (>= 6.1.0)
+    faker (3.5.3)
+      i18n (>= 1.8.11, < 2)
     ffi (1.17.3)
     ffi (1.17.3-arm64-darwin)
     ffi (1.17.3-x86_64-darwin)
@@ -508,6 +515,8 @@ DEPENDENCIES
   countries
   debug
   devise (~> 4.8.1)
+  factory_bot_rails (~> 6.5)
+  faker (~> 3.5)
   graphiql-rails
   graphql
   importmap-rails

@@ -97,3 +97,6 @@ gem 'HyperPay'
 gem 'graphql'
 gem "graphiql-rails", group: :development
 gem 'rack-cors'
+
+gem "factory_bot_rails", "~> 6.5", :groups => [:development, :test]
+gem "faker", "~> 3.5", :groups => [:development, :test]

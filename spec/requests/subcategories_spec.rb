@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe 'Subcategories', type: :request do
-  let(:category) { Category.create!(category_name: 'Test Category') }
+  let(:category) { create(:category) }
 
   describe 'GET /index' do
     it 'returns http success' do
@@ -14,7 +14,7 @@ RSpec.describe 'Subcategories', type: :request do
 
   describe 'GET /show' do
     it 'returns http success' do
-      subcategory = Subcategory.create!(subcategory_name: 'Test Subcategory', category: category)
+      subcategory = create(:subcategory, category: category)
       get "/subcategories/#{subcategory.id}"
       expect(response).to have_http_status(:success)
     end
