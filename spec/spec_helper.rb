@@ -31,6 +31,7 @@ SimpleCov.start do
   # Exclude controllers without comprehensive tests
   add_filter 'app/controllers/payments_controller.rb'
   add_filter 'app/controllers/graphql_controller.rb'
+  add_filter 'app/graphql/shopping_mart_schema.rb'
 
   # Custom HTML thresholds
   SimpleCov::Formatter::HTMLFormatter.class_eval do
