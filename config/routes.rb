@@ -30,6 +30,8 @@ Rails.application.routes.draw do
 
   # JWT token endpoint
   post '/jwt_token', to: 'jwt_tokens#create'
+  # Login endpoint (returns JWT)
+  post '/login', to: 'logins#create'
 
   post 'orders', to: "orders#create"
 
