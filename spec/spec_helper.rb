@@ -32,7 +32,7 @@ SimpleCov.start do
   add_filter 'app/controllers/payments_controller.rb'
   add_filter 'app/controllers/graphql_controller.rb'
   add_filter 'app/graphql/shopping_mart_schema.rb'
-  add_filter 'app/controllers/json_webhooks_controller.rb'
+  add_filter 'app/controllers/jwt_tokens_controller.rb'
 
   # Custom HTML thresholds
   SimpleCov::Formatter::HTMLFormatter.class_eval do
