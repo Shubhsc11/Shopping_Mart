@@ -23,10 +23,10 @@ SimpleCov.start do
   add_group 'Controllers', 'app/controllers'
   add_group 'Admin', 'app/admin'
 
-  # # Exclude folders
-  # add_filter '/spec/'
-  # add_filter '/config/'
-  # add_filter '/vendor/'
+  # Exclude folders
+  add_filter '/spec/'
+  add_filter '/config/'
+  add_filter '/vendor/'
 
   # Custom HTML thresholds
   SimpleCov::Formatter::HTMLFormatter.class_eval do
@@ -37,6 +37,15 @@ SimpleCov.start do
       else 'red'
       end
     end
+  end
+
+  SimpleCov.at_exit do
+    SimpleCov.result.files.each do |file|
+      if file.covered_percent < 50
+        puts "Low coverage: #{file.filename} (#{file.covered_percent.round(2)}%)"
+      end
+    end
+    SimpleCov.result.format!
   end
 end
 
