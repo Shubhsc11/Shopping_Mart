@@ -57,7 +57,8 @@ RSpec.describe 'Contacts', type: :request do
 
   describe 'PATCH /update' do
     it 'returns a successful response' do
-      patch contact_path(contact), params: { contact: { first_name: 'Jane', last_name: 'Smith', email: 'jane@example.com' } }
+      patch contact_path(contact),
+            params: { contact: { first_name: 'Jane', last_name: 'Smith', email: 'jane@example.com' } }
       expect(response).to have_http_status(:found)
     end
   end

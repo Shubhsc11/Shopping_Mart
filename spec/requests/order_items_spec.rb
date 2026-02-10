@@ -27,7 +27,6 @@ RSpec.describe 'OrderItems', type: :request do
     end
   end
 
-
   describe 'DELETE /destroy' do
     it 'returns http success' do
       delete "/order_items/#{order_item.id}"

@@ -23,10 +23,10 @@ SimpleCov.start do
   add_group 'Controllers', 'app/controllers'
   add_group 'Admin', 'app/admin'
 
-  # Exclude folders
-  add_filter '/spec/'
-  add_filter '/config/'
-  add_filter '/vendor/'
+  # # Exclude folders
+  # add_filter '/spec/'
+  # add_filter '/config/'
+  # add_filter '/vendor/'
 
   # Custom HTML thresholds
   SimpleCov::Formatter::HTMLFormatter.class_eval do

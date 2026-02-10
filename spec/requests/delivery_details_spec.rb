@@ -44,14 +44,18 @@ RSpec.describe 'DeliveryDetails', type: :request do
 
   describe 'POST /create' do
     it 'returns http success' do
-      post '/delivery_details', params: { delivery_detail: { full_name: 'John Doe', address: '123 Main St', contact_no: '1234567890', order_id: order.id, user_id: user.id } }
+      post '/delivery_details',
+           params: { delivery_detail: { full_name: 'John Doe', address: '123 Main St', contact_no: '1234567890',
+                                        order_id: order.id, user_id: user.id } }
       expect(response).to have_http_status(:found)
     end
   end
 
   describe 'PATCH /update' do
     it 'returns http success' do
-      patch "/delivery_details/#{delivery_detail.id}", params: { delivery_detail: { full_name: 'John Doe', address: '123 Main St', contact_no: '1234567890', order_id: order.id, user_id: user.id } }
+      patch "/delivery_details/#{delivery_detail.id}",
+            params: { delivery_detail: { full_name: 'John Doe', address: '123 Main St', contact_no: '1234567890',
+                                         order_id: order.id, user_id: user.id } }
       expect(response).to have_http_status(:found)
     end
   end
