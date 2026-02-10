@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe 'Users', type: :request do
   let(:password) { 'password' }
-  let(:user) { User.create!(email: 'user@example.com', password: password, roles: 'customer') }
+  let(:user) { create(:user, password: password, password_confirmation: password) }
 
   describe 'POST /add_points' do
     context 'when user is logged in as customer' do

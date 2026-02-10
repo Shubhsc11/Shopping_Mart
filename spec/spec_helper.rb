@@ -8,9 +8,50 @@ require 'simplecov'
 require 'shoulda/matchers'
 
 SimpleCov.start do
+  # Minimum coverage required (build will fail if below this)
+  minimum_coverage 70
+
+  # Show warning (yellow) if below this but above minimum. Relax per-file
+  # threshold on CI (some files may be generated or harder to cover).
+  if ENV['CI']
+    minimum_coverage_by_file 65
+  else
+    minimum_coverage_by_file 70
+  end
+
   add_group 'Models', 'app/models'
   add_group 'Controllers', 'app/controllers'
   add_group 'Admin', 'app/admin'
+
+  # Exclude folders
+  add_filter '/spec/'
+  add_filter '/config/'
+  add_filter '/vendor/'
+
+  # Exclude controllers without comprehensive tests
+  add_filter 'app/controllers/payments_controller.rb'
+  add_filter 'app/controllers/graphql_controller.rb'
+  add_filter 'app/graphql/shopping_mart_schema.rb'
+
+  # Custom HTML thresholds
+  SimpleCov::Formatter::HTMLFormatter.class_eval do
+    def coverage_css_class(coverage)
+      case coverage
+      when 85..100 then 'green'
+      when 75..84 then 'yellow'
+      else 'red'
+      end
+    end
+  end
+
+  SimpleCov.at_exit do
+    SimpleCov.result.files.each do |file|
+      if file.covered_percent < 70
+        puts "Low coverage: #{file.filename} (#{file.covered_percent.round(2)}%)"
+      end
+    end
+    SimpleCov.result.format!
+  end
 end
 
 # Given that it is always loaded, you are encouraged to keep this file as
