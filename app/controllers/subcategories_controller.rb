@@ -2,8 +2,13 @@
 
 class SubcategoriesController < ApplicationController
   before_action :set_subcategory, only: :show
+
   def index
     @subcategories = Subcategory.all
+    respond_to do |format|
+      format.html
+      format.json { render json: @subcategories }
+    end
   end
 
   def show

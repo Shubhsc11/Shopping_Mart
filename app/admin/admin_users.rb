@@ -7,15 +7,13 @@ ActiveAdmin.register AdminUser do
     selectable_column
     id_column
     column :email
-    # column :current_sign_in_at
-    # column :sign_in_count
-    column :created_at
+    column :created_at do |admin_user|
+      "#{time_ago_in_words(admin_user.created_at)} ago"
+    end
     actions
   end
 
   filter :email
-  # filter :current_sign_in_at
-  # filter :sign_in_count
   filter :created_at
 
   form do |f|

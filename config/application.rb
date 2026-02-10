@@ -12,6 +12,7 @@ Bundler.require(*Rails.groups)
 
 module ShoppingMart
   class Application < Rails::Application
+    include ActionView::Helpers::DateHelper
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.0
 

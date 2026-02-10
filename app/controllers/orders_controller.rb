@@ -5,11 +5,6 @@ class OrdersController < ApplicationController
     @order = Order.all
   end
 
-  # def new
-  #   @product = Product.find_by(params[:id])
-  #   @order = Order.new
-  # end
-
   def show
     @order = Order.find_by(id: params[:id])
   end

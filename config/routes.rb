@@ -28,6 +28,11 @@ Rails.application.routes.draw do
     post :add_new_checkout
   end
 
+  # JWT token endpoint
+  post '/jwt_token', to: 'jwt_tokens#create'
+  # Login endpoint (returns JWT)
+  post '/login', to: 'jwt_tokens#create'
+
   post 'orders', to: "orders#create"
 
   post 'order_items/:id/add', to: "order_items#add_quantity", as: "order_item_add"
