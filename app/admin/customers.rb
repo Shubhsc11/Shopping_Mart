@@ -21,7 +21,6 @@ ActiveAdmin.register User, as: 'Customer' do
       input :email
       input :password
       input :password_confirmation
-      # input :roles
     end
     actions
   end

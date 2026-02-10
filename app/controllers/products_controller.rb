@@ -1,22 +1,23 @@
 # frozen_string_literal: true
 
 class ProductsController < ApplicationController
-  # before_action :find_product, only: %i[show edit update destroy]
+  before_action :find_product, only: %i[show edit update destroy]
 
   def index
     @products = Product.order(created_at: :asc)
+    respond_to do |format|
+      format.html
+      format.json { render json: @products }
+    end
   end
 
-  def show
-    @product = Product.find(params[:id])
-  end
+  def show; end
 
   def new
     @product = Product.new
   end
 
   def edit
-    @product = Product.find(params[:id])
     @categories = Category.all.map { |c| [c.category_name, c.id] }
   end
 
@@ -30,7 +31,6 @@ class ProductsController < ApplicationController
   end
 
   def update
-    @product = Product.find(params[:id])
     @product.category_id = params[:category_id]
 
     if @product.update(product_params)
@@ -41,9 +41,7 @@ class ProductsController < ApplicationController
   end
 
   def destroy
-    @product = Product.find(params[:id])
     @product.destroy
-
     redirect_to root_path, status: :see_other
   end
 
