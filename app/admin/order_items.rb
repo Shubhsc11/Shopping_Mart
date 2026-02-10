@@ -14,8 +14,8 @@ ActiveAdmin.register OrderItem do
     column :item_name
     column :item_price
     column :item_qty
-    column :product_id
-    column :order_id
+    column 'Product Id', :product_id
+    column 'Order Id', :order_id
 
     actions
   end
