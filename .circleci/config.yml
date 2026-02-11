@@ -42,9 +42,8 @@ commands:
     steps:
       - run:
           name: Install PostgreSQL client
-          command: |
-            apt-get update
-            apt-get install -y postgresql-client
+          command:
+            sudo apt-get install -y postgresql-client
       - run:
           name: Wait for PostgreSQL
           command: |
@@ -114,7 +113,9 @@ jobs:
     steps:
       - restore_cache:
           key: repo-{{ .Environment.CIRCLE_SHA1 }}
-      - setup_dependencies
+      - setup_dependencies:
+          sudo apt-get update
+          sudo apt-get clean
       - run:
           name: Run RuboCop
           command: |
