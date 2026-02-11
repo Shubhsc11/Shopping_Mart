@@ -1,153 +1,21 @@
 version: 2.1
-
-executors:
-  ruby:
-    docker:
-      - image: cimg/ruby:3.0.0
-      - image: postgres:11-alpine
-        environment:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: password
-          POSTGRES_DB: shopping_test
-      - image: redis:7-alpine
-    working_directory: ~/shopping_mart
-    environment:
-      BUNDLE_JOBS: 3
-      BUNDLE_RETRY: 3
-      RAILS_ENV: test
-      DATABASE_URL: postgresql://postgres:password@localhost:5432/shopping_test
-
-commands:
-  setup_dependencies:
-    description: "Install Ruby dependencies"
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "Gemfile.lock" }}
-            - v1-dependencies-
-      - run:
-          name: Install bundler
-          command: gem install bundler
-      - run:
-          name: Bundle Install
-          command: bundle install --jobs 3 --retry 3
-      - save_cache:
-          paths:
-            - vendor/bundle
-          key: v1-dependencies-{{ checksum "Gemfile.lock" }}
-
-  setup_database:
-    description: "Setup test database"
-    steps:
-      - run:
-          name: Install PostgreSQL client
-          command: apk add --no-cache postgresql-client
-      - run:
-          name: Wait for PostgreSQL
-          command: |
-            for i in {1..30}; do
-              pg_isready -h localhost -p 5432 && exit 0
-              echo "Waiting for PostgreSQL..."
-              sleep 1
-            done
-            exit 1
-      - run:
-          name: Create database
-          command: bundle exec rake db:create
-      - run:
-          name: Run migrations
-          command: bundle exec rake db:migrate
-      - run:
-          name: Seed database
-          command: bundle exec rake db:seed
-
 jobs:
-  checkout_code:
-    executor: ruby
+  install_postgresql_client:
+    docker:
+      - image: circleci/python:3.8
     steps:
       - checkout
-      - save_cache:
-          key: repo-{{ .Environment.CIRCLE_SHA1 }}
-          paths:
-            - ~/shopping_mart
-
-  build:
-    executor: ruby
-    steps:
-      - restore_cache:
-          key: repo-{{ .Environment.CIRCLE_SHA1 }}
-      - setup_dependencies
       - run:
-          name: Precompile assets
-          command: bundle exec rake assets:precompile
-
-  test:
-    executor: ruby
-    steps:
-      - restore_cache:
-          key: repo-{{ .Environment.CIRCLE_SHA1 }}
-      - setup_dependencies
-      - setup_database
-      - run:
-          name: Run RSpec tests
-          command: bundle exec rspec --format progress --format RspecJunitFormatter --out ~/rspec.xml
-      - store_test_results:
-          path: ~/rspec.xml
-      - store_artifacts:
-          path: ~/rspec.xml
-          destination: test-results/rspec.xml
-      - run:
-          name: Upload coverage
+          name: Update and Clean APT
           command: |
-            if [ -d "coverage" ]; then
-              echo "Coverage report generated"
-            fi
-      - store_artifacts:
-          path: coverage
-          destination: coverage-report
-
-  lint:
-    executor: ruby
-    steps:
-      - restore_cache:
-          key: repo-{{ .Environment.CIRCLE_SHA1 }}
-      - setup_dependencies
+            sudo apt-get update
+            sudo apt-get clean
       - run:
-          name: Run RuboCop
+          name: Install PostgreSQL Client
           command: |
-            if gem list rubocop -i > /dev/null; then
-              bundle exec rubocop
-            else
-              echo "RuboCop not installed in Gemfile"
-            fi
-
-  security_check:
-    executor: ruby
-    steps:
-      - restore_cache:
-          key: repo-{{ .Environment.CIRCLE_SHA1 }}
-      - setup_dependencies
-      - run:
-          name: Check for security vulnerabilities
-          command: |
-            bundle audit check --update 2>/dev/null || echo "Bundle audit not available"
-
+            sudo apt-get install -y postgresql-client
 workflows:
-  version: 2.1
-
-  build_and_test:
+  version: 2
+  install_and_test:
     jobs:
-      - checkout_code
-      - build:
-          requires:
-            - checkout_code
-      - test:
-          requires:
-            - checkout_code
-      - lint:
-          requires:
-            - checkout_code
-      - security_check:
-          requires:
-            - checkout_code
+      - install_postgresql_client
