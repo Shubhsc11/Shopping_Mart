@@ -1,7 +1,5 @@
-# Use the latest 2.1 version of CircleCI pipeline process engine.
 version: 2.1
 
-# Executors define the environment in which jobs will run
 executors:
   ruby:
     docker:
@@ -19,7 +17,6 @@ executors:
       RAILS_ENV: test
       DATABASE_URL: postgresql://postgres:password@localhost:5432/shopping_test
 
-# Reusable commands
 commands:
   setup_dependencies:
     description: "Install Ruby dependencies"
@@ -62,7 +59,6 @@ commands:
           name: Seed database
           command: bundle exec rake db:seed
 
-# Define jobs
 jobs:
   checkout_code:
     executor: ruby
@@ -122,7 +118,6 @@ jobs:
             else
               echo "RuboCop not installed in Gemfile"
             fi
-          when: always
 
   security_check:
     executor: ruby
@@ -134,9 +129,7 @@ jobs:
           name: Check for security vulnerabilities
           command: |
             bundle audit check --update 2>/dev/null || echo "Bundle audit not available"
-          when: always
 
-# Orchestrate jobs using workflows
 workflows:
   version: 2.1
 
@@ -152,8 +145,6 @@ workflows:
       - lint:
           requires:
             - checkout_code
-          when: always
       - security_check:
           requires:
             - checkout_code
-          when: always
