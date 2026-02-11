@@ -3,7 +3,7 @@ version: 2.1
 executors:
   ruby:
     docker:
-      - image: cimg/ruby:3.2.0
+      - image: cimg/ruby:3.0.0
       - image: postgres:11-alpine
         environment:
           POSTGRES_USER: postgres
@@ -40,6 +40,9 @@ commands:
   setup_database:
     description: "Setup test database"
     steps:
+      - run:
+          name: Install PostgreSQL client
+          command: apk add --no-cache postgresql-client
       - run:
           name: Wait for PostgreSQL
           command: |
