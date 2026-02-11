@@ -5,5 +5,19 @@
 #
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
-AdminUser.create(email: 'admin@example.com', password: 'password', password_confirmation: 'password') if Rails.env.development?
+admin = AdminUser.find_or_create_by(email: 'admin@example.com') do |admin_user|
+  admin_user.password = 'password'
+  admin_user.password_confirmation = 'password'
+end
 
+owner= User.find_or_create_by(email: 'owner@example.com', roles: 'owner') do |user|
+  user.password = 'Password@321'
+  user.password_confirmation = 'Password@321'
+end
+
+customer = User.find_or_create_by(email: 'customer@example.com', roles: 'customer') do |user|
+  user.password = 'Password@321'
+  user.password_confirmation = 'Password@321'
+end
+
+puts 'Seed data created successfully!'
