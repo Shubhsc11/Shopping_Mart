@@ -94,21 +94,18 @@ jobs:
       - setup_database
       - run:
           name: Run RSpec tests
-          command: bundle exec rspec --format progress --format RspecJunitFormatter --out ~/rspec.xml
-      - store_test_results:
-          path: ~/rspec.xml
-      - store_artifacts:
-          path: ~/rspec.xml
-          destination: test-results/rspec.xml
+          command: bundle exec rspec --format progress
       - run:
-          name: Upload coverage
+          name: Store coverage report
           command: |
             if [ -d "coverage" ]; then
               echo "Coverage report generated"
             fi
+          when: always
       - store_artifacts:
           path: coverage
           destination: coverage-report
+          when: always
 
   lint:
     executor: ruby
