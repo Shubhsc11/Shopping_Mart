@@ -1,14 +1,15 @@
 # Render Blueprint for Rails
-services:
-  # PostgreSQL Database
-  - type: pg
-    name: shopping_dev_db
+
+databases:
+  - name: shopping_dev_db
+    databaseName: shopping_dev
+    user: shopping_dev
     plan: free
 
-  # Rails Web Service
+services:
   - type: web
     name: shopping_dev_web
-    env: ruby
+    runtime: ruby
     plan: free
     buildCommand: |
       bundle install
@@ -22,4 +23,6 @@ services:
           property: connectionString
       - key: RAILS_MASTER_KEY
         sync: false
+      - key: WEB_CONCURRENCY
+        value: 2
     autoDeploy: true
