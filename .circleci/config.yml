@@ -3,7 +3,7 @@ version: 2.1
 executors:
   ruby:
     docker:
-      - image: cimg/ruby:3.0.0
+      - image: cimg/ruby:3.2.3
       - image: postgres:11-alpine
         environment:
           POSTGRES_USER: postgres

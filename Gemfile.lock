@@ -185,9 +185,9 @@ GEM
       railties (>= 6.1.0)
     faker (3.5.3)
       i18n (>= 1.8.11, < 2)
-    ffi (1.17.3)
     ffi (1.17.3-arm64-darwin)
     ffi (1.17.3-x86_64-darwin)
+    ffi (1.17.3-x86_64-linux-gnu)
     fiber-storage (1.0.0)
     flay (2.14.2)
       erubi (~> 1.10)
@@ -544,7 +544,7 @@ DEPENDENCIES
   webdrivers
 
 RUBY VERSION
-   ruby 3.0.0p0
+   ruby 3.2.3p157
 
 BUNDLED WITH
    2.5.4
