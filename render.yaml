@@ -15,6 +15,7 @@ services:
       bundle install
       bundle exec rails assets:precompile
       bundle exec rails db:migrate
+      bundle exec rails db:seed
     startCommand: bundle exec rails server -b 0.0.0.0 -p $PORT
     envVars:
       - key: DATABASE_URL
