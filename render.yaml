@@ -1,7 +1,7 @@
 # Render Blueprint for Rails
 services:
   - type: web
-    name: shopping-mart-web
+    name: shopping_dev_web
     env: ruby
     plan: free
     buildCommand: bundle install && bundle exec rake db:migrate
@@ -9,11 +9,11 @@ services:
     envVars:
       - key: DATABASE_URL
         fromDatabase:
-          name: shopping-mart-db
+          name: shopping_dev
           property: connectionString
       - key: RAILS_MASTER_KEY
         sync: false
     autoDeploy: true
-  - type: postgres
-    name: shopping-mart-db
+  - type: postgresql
+    name: shopping_dev
     plan: free
