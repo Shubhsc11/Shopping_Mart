@@ -8,7 +8,11 @@ ActiveAdmin.register Subcategory do
 
   filter :id
   filter :subcategory_name, label: 'Name'
-  filter :category_id
+  filter :category_id, as: :select, collection: lambda {
+    Category.all.map do |c|
+      [c.category_name, c.id]
+    end
+  }, label: 'Category'
   filter :created_at
 
   index do

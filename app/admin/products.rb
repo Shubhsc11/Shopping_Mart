@@ -3,13 +3,23 @@
 ActiveAdmin.register Product do
   actions :all, except: %i[new edit destroy]
 
-  filter :user_id, as: :select, collection: User.all.map { |u| [u.email, u.id] }
+  filter :user_id, as: :select, collection: lambda {
+    User.all.map do |u|
+      [u.email, u.id]
+    end
+  }, label: 'User'
   filter :p_name, label: 'Product Name'
   filter :p_price, label: 'Product Price'
   filter :p_qty, label: 'Product Quantity'
-  filter :category_id, as: :select, collection: Category.all.map { |c| [c.category_name, c.id] }, label: 'Category'
-  filter :subcategory_id, as: :select, collection: Subcategory.all.map { |s|
-    [s.subcategory_name, s.id]
+  filter :category_id, as: :select, collection: lambda {
+    Category.all.map do |c|
+      [c.category_name, c.id]
+    end
+  }, label: 'Category'
+  filter :subcategory_id, as: :select, collection: lambda {
+    Subcategory.all.map do |s|
+      [s.subcategory_name, s.id]
+    end
   }, label: 'Subcategory'
 
   index do

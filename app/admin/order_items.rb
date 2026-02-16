@@ -6,9 +6,9 @@ ActiveAdmin.register OrderItem do
 
   filter :id
   filter :item_price
-  filter :item_name, as: :select, collection: OrderItem.pluck(:item_name).uniq
-  filter :product_id, as: :select, collection: Product.all.map { |p| [p.p_name, p.id] }
-  filter :order_id, as: :select, collection: Order.ids
+  filter :item_name, as: :select, collection: -> { OrderItem.distinct.pluck(:item_name) }
+  filter :product_id, as: :select, collection: -> { Product.pluck(:p_name, :id) }
+  filter :order_id, as: :select, collection: -> { Order.pluck(:id, :id) }
 
   index do
     selectable_column
