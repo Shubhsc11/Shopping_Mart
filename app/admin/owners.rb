@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 ActiveAdmin.register User, as: 'Owner' do
+  menu parent: 'Users', priority: 3
   permit_params do
     %i[email password password_confirmation roles]
   end
@@ -10,7 +11,9 @@ ActiveAdmin.register User, as: 'Owner' do
 
   index do
     selectable_column
-    column 'User Id', :id
+    column 'Owner Id', :id do |user|
+      link_to user.id, admin_owner_path(user)
+    end
     column 'Email', :email
     actions
   end

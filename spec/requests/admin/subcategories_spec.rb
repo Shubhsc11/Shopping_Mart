@@ -36,7 +36,7 @@ RSpec.describe 'Admin::Subcategories', type: :request do
     it 'displays the form for creating a new Subcategory' do
       get '/admin/subcategories/new'
       expect(response).to have_http_status(:success)
-      expect(response.body).to include('Subcategory name')
+      expect(response.body).to include('Name')
     end
   end
 

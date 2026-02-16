@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 ActiveAdmin.register Order do
+  menu parent: 'Order Details', priority: 1
   actions :all, except: %i[new edit destroy]
 
   filter :id
@@ -15,6 +16,8 @@ ActiveAdmin.register Order do
     rescue StandardError
       nil
     end
-    column 'Order Status', :status
+    column 'Order Status', :status do |order|
+      order.status.humanize.presence || '-'
+    end
   end
 end

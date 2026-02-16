@@ -46,7 +46,8 @@ RSpec.describe 'Admin::Users', type: :request do
         user: {
           email: 'newuser@example.com',
           password: 'password#123',
-          password_confirmation: 'password#123'
+          password_confirmation: 'password#123',
+          roles: 'customer'
         }
       }
     end

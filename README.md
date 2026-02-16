@@ -1,40 +1,39 @@
-# README
+## Shopping Mart – Online Order Booking Platform
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This project is a full-featured online shopping platform, similar to e-commerce and order booking systems found on popular sites. Users can browse products, add items to their cart, place orders, and track their order status.
 
-Things you may want to cover:
+### Features
+- User authentication and management
+- Product catalog with categories and subcategories
+- Shopping cart functionality
+- Order creation and management
+- Order status tracking (created, placed, confirmed, shipped, delivered)
+- Delivery details
+- Admin dashboard for managing products, orders, users, and categories
 
-* Ruby version
+### Tech Stack
+- Ruby on Rails (API & web)
+- PostgreSQL (database)
+- HTML/CSS/JS (frontend)
 
-* System dependencies
+### Project Structure
+- Models: Product, Order, OrderItem, User, Category, Subcategory, DeliveryDetail
+- Controllers: Orders, Products, Users, Categories, CartItems, etc.
+- Admin: Separate admin controllers for management
 
-* Configuration
+### CI/CD & Code Quality
+- GitHub Actions and CircleCI are set up for continuous integration.
+- RSpec tests are written for backend functionality.
+- RuboCop is used for code style and has been fixed.
 
-* Database creation
+### Deployment
+See `render.yaml` for Render deployment configuration. Follow the steps in the Deployment section to deploy to Render.
 
-* Database initialization
+### Getting Started
+1. Clone the repository
+2. Install dependencies: `bundle install`
+3. Setup database: `rails db:create db:migrate db:seed`
+4. Start server: `rails server`
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-
-* Deployment instructions
-
-## Deploying to Render
-
-1. [Sign up](https://dashboard.render.com/register) for a Render account if you don't have one.
-2. Connect your GitHub repository to Render.
-3. Render will auto-detect the Rails app. Use the following settings:
-	- **Build Command:** `bundle install && bundle exec rake db:migrate`
-	- **Start Command:** `bundle exec rails server -p 10000`
-4. Add the following environment variables in Render:
-	- `RAILS_MASTER_KEY` (from your local `config/master.key`)
-	- `DATABASE_URL` (auto-provided if you add a Render Postgres service)
-5. Add a Postgres database via Render and link it to your web service.
-6. Deploy!
-
-See `render.yaml` for an example Render Blueprint configuration.
-
-* ...
+### Render Deployment
+See the Deployment instructions above and in `render.yaml`.
