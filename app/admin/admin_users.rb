@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
-ActiveAdmin.register AdminUser do
+ActiveAdmin.register AdminUser, as: 'Admins' do
+  menu parent: 'Users', priority: 1
   permit_params :email, :password, :password_confirmation
 
   index do

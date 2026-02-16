@@ -12,6 +12,8 @@ class User < ApplicationRecord
   has_many :orders, class_name: 'Order', dependent: :destroy
   has_many :delivery_details, class_name: 'DeliveryDetail', dependent: :destroy
 
+  validates :roles, presence: true
+
   after_create :set_credit_points
 
   def set_credit_points

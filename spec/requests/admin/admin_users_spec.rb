@@ -9,31 +9,31 @@ RSpec.describe 'Admin::AdminUsers', type: :request do
     sign_in admin_user
   end
 
-  describe 'GET /admin/admin_users' do
+  describe 'GET /admin/admins' do
     it 'returns http success' do
-      get '/admin/admin_users'
+      get '/admin/admins'
       expect(response).to have_http_status(:success)
     end
   end
 
-  describe 'GET /admin/admin_users/new' do
+  describe 'GET /admin/admins/new' do
     it 'displays the form for creating a new AdminUser' do
-      get '/admin/admin_users/new'
+      get '/admin/admins/new'
       expect(response).to have_http_status(:success)
       expect(response.body).to include('Email')
       expect(response.body).to include('Password')
     end
   end
 
-  describe 'GET /admin/admin_users/:id/edit' do
+  describe 'GET /admin/admins/:id/edit' do
     it 'displays the form for editing an AdminUser' do
-      get "/admin/admin_users/#{admin_user.id}/edit"
+      get "/admin/admins/#{admin_user.id}/edit"
       expect(response).to have_http_status(:success)
       expect(response.body).to include('Email')
     end
   end
 
-  describe 'POST /admin/admin_users' do
+  describe 'POST /admin/admins' do
     let(:valid_params) do
       {
         admin_user: {
@@ -46,10 +46,10 @@ RSpec.describe 'Admin::AdminUsers', type: :request do
 
     it 'creates a new AdminUser' do
       expect do
-        post '/admin/admin_users', params: valid_params
+        post '/admin/admins', params: valid_params
       end.to change(AdminUser, :count).by(1)
 
-      expect(response).to redirect_to(%r{/admin/admin_users/\d+})
+      expect(response).to redirect_to(%r{/admin/admins/\d+})
     end
   end
 end

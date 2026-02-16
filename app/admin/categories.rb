@@ -1,20 +1,22 @@
 # frozen_string_literal: true
 
 ActiveAdmin.register Category do
+  menu parent: 'Catalog', priority: 1
   permit_params do
     %i[category_name description]
   end
 
   filter :id
   filter :category_name
-  # filter :description
   filter :created_at
 
   index do
     selectable_column
-    column 'Category Id', :id
-    column 'Category Name', :category_name
-    column 'Category Description', :description
+    column 'Id', :id
+    column 'Name', :category_name
+    column 'Description', :description do |c|
+      truncate(c.description, length: 50).presence || '-'
+    end
 
     actions
   end
