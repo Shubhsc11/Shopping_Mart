@@ -1,175 +1,112 @@
-<head>
-	<style type="text/css">
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1 class="h2 fw-bold text-dark mb-0">Our Products</h1>
+  
+  <div class="actions">
+    <% if user_signed_in? %>
+      <% if current_user.owner? %>
+        <%= link_to new_product_path, class: "btn btn-success rounded-pill px-4 shadow-sm" do %>
+          <i class="fa fa-plus me-2"></i> Create New Product
+        <% end %>
+      <% else %>
+        <% item_count = current_user.cart&.cart_items&.count || 0 %>
+        <%= link_to my_cart_path, class: "btn btn-outline-success rounded-pill px-4 shadow-sm position-relative" do %>
+          <i class="fa fa-shopping-cart me-2 text-dark"></i> Cart
+          <% if item_count > 0 %>
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+              <%= item_count %>
+            </span>
+          <% end %>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+</div>
 
-		table, th, td {
-		  border-collapse: collapse;
-		  font-size: 12pt;
-		  padding: 5px;
-		  text-align: center;
-		}
+<div class="row g-4">
+  <% if user_signed_in? && current_user.owner? && current_user.products %>
+    <% current_user.products.each do |product| %>
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="card product-card shadow-sm h-100">
+          <div class="card-body d-flex flex-column">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <h5 class="card-title text-truncate" title="<%= product.p_name %>"><%= product.p_name %></h5>
+              <span class="price-tag">$<%= product.p_price %></span>
+            </div>
+            
+            <div class="mb-3">
+              <% if product.category %>
+                <span class="category-badge me-1"><%= product.category.category_name %></span>
+              <% end %>
+              <% if product.subcategory %>
+                <small class="text-muted"><%= product.subcategory.subcategory_name %></small>
+              <% end %>
+            </div>
 
-		th {
-			border: 2px solid black;
-		  background-color: #96D4D4;
-		}
-		td{
-			border: 2px groove;
-		}
+            <div class="mt-auto">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <span class="badge bg-light text-dark border">Qty: <%= product.p_qty %></span>
+              </div>
+              <%= link_to product, class: "btn btn-outline-success w-100 rounded-pill" do %>
+                <i class="fa fa-eye me-1"></i> View Details
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
 
-	</style>
-</head>
+  <% else %>
+    <% @products.each do |product| %>
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="card product-card shadow-sm h-100 border-0">
+          <div class="card-body d-flex flex-column p-4">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <h5 class="card-title h5 mb-0"><%= product.p_name %></h5>
+              <span class="price-tag">$<%= product.p_price %></span>
+            </div>
 
-<body>
-	<nav class="navbar navbar-expand-md navbar-dark bg-success">
-	  <div class="container-fluid">
-	    <a class="navbar-brand" href="#" style="color: darkblue;">Shopping Mart</a>
-	    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-	      <span class="navbar-toggler-icon"></span>
-	    </button>
-	    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-	      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-	        <li class="nav-item">
-	          <a class="nav-link active" aria-current="page" href="products">Home</a>
-	        </li>
-	        <li class="nav-item">
-	          <li class="nav-link"><%= link_to 'Offers', offers_path %></li>
-	        </li>
-	        <li class="nav-item dropdown">
-	          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Categories</a>
-	          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-				     	<% Category.all.each do |category| %>
-				          <li class="dropdown-item">
-				          	<%= link_to category.category_name, category %>
-				          </li>
-				     	<% end %>
+            <div class="mb-3">
+              <% if product.category %>
+                <%= link_to product.category.category_name, product.category, class: "category-badge" %>
+              <% end %>
+              <% if product.subcategory %>
+                <span class="ms-1 text-muted small">• <%= product.subcategory.subcategory_name %></span>
+              <% end %>
+            </div>
 
-				     	<li><hr class="dropdown-divider"></li>
-	            <li class="dropdown-item" disabled;>Coming Soon More*</li>
-				  	</ul>		            
-	        </li>
+            <p class="text-muted small mb-4">
+              Availability: <span class="fw-bold <%= product.p_qty > 0 ? 'text-success' : 'text-danger' %>">
+                <%= product.p_qty > 0 ? "#{product.p_qty} in stock" : "Out of stock" %>
+              </span>
+            </p>
 
-	        <li class="nav-item">
-	          <li class="nav-link"><%= link_to 'About Us', about_us_path %></li>
-	        </li>
+            <div class="mt-auto">
+              <% if user_signed_in? %>
+                <div class="d-flex gap-2">
+                  <%= button_to cart_items_path(product_id: product.id, action_key: 'buy'), method: :post, class: "btn btn-buy flex-grow-1" do %>
+                    Buy Now
+                  <% end %>
+                  <%= button_to cart_items_path(product_id: product.id), method: :post, class: "btn btn-outline-primary rounded-pill px-3" do %>
+                    <i class="fa fa-cart-plus"></i>
+                  <% end %>
+                </div>
+              <% else %>
+                <%= link_to new_user_session_path, class: "btn btn-buy w-100" do %>
+                  Sign in to Buy
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+</div>
 
-	        <li class="nav-item">
-	          <li class="nav-link"><%= link_to 'Contact Us', new_contact_path %></li>
-	        </li>
-
-        
-	        <% if user_signed_in? %>
-	        	<li class="nav-item">
-		          <a class="nav-link" disabled>|| <%= current_user.email %> {<%= current_user.roles.humanize %>} ||</a>
-		        </li>
-		      <% end %>
-
-					<li class="nav-item dropdown">
-	          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="true" style="color: black; background-color: white; border-radius: 10px;">User</a>
-	          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-	          	<li class="nav-item dropdown">
-	          		<% if user_signed_in? %>
-			          	<li class="dropdown-item">
-			          		<%= link_to 'Edit Profile', edit_user_registration_path %>
-			          	</li>
-									<li class="dropdown-item">
-			          		<%= link_to 'Logout', destroy_user_session_path %>
-			          	</li>
-			          <% else %>
-			          	<li class="dropdown-item">
-			          		<%= link_to 'Login', new_user_session_path %>
-			          	</li>
-									<li class="dropdown-item">
-			          		<%= link_to 'Sign Up', new_user_registration_path %>
-			          	</li>
-			          <% end %>
-		          </li>
-	          </ul>
-	        </li>
-	      </ul>
-
-				<ul class="navbar-nav ms-auto align-items-center">
-					<% if user_signed_in? %>
-						<li class="nav-item me-3">
-							<span class="nav-link text-white">
-								<i class="fa fa-money" aria-hidden="true"></i> Points: <span style="color: black; background-color: white; border-radius: 5px; padding: 2px; font-weight: bold;"><%= current_user.points %></span>
-							</span>
-						</li>
-					<% end %>
-				</ul>
-	    </div>
-	  </div>
-	</nav>
-	<br>
-
-	<div style="float: right; margin-right: 20px;">
-		<% if user_signed_in? %>
-			<% if current_user.owner? %>
-				<button type="button" class="btn btn-outline-success" style="margin-left: 20px;">
-				<%= link_to "Create New Product", new_product_path %></button>
-			<% else %>
-				<button type="button" class="btn btn-outline-success" style="margin-right: 25px;">
-					<% item_count = current_user.cart.cart_items.count.presence || 0 	%>
-					<i class="fa fa-cart-plus" aria-hidden="true" style="color: black;"></i>
-					<%= link_to "#{item_count}", my_cart_path %>
-				</button>
-			<% end %>
-		<% end %>
-	</div>
-
-	<div style="align-items: center; justify-content: center; display: flex; flex-direction: column;">
-		<h4 style="text-decoration-line: underline;">Products List</h4>
-		<div style="background-color: #e8c06f; border-radius: 10px; padding: 10px;">
-			<table style="border-radius: 10px; border: 1px solid black;">
-				<tr>
-					<th>Name</th>
-					<th>Price</th>
-					<% if user_signed_in? %>
-						<th>Quantity</th>
-						<th>Categories</th>
-						<th>SubCategories</th>
-						<th>Actions</th>
-					<% end %>
-				</tr>
-
-				<% if user_signed_in? %>
-					<% if current_user.owner? && current_user.products %>
-						<% current_user.products.each do |product|%>
-							<tr>
-								<td><%= product.p_name %></td>
-								<td><%= product.p_price %></td>
-								<td><%= product.p_qty %></td>
-								<td><%= product&.category&.category_name %></td>
-								<td><%= product&.subcategory&.subcategory_name %></td>
-								<td><p class="btn btn-outline-success"><%= link_to "View", product %></p></td>
-							</tr>
-						<% end %>
-
-					<% else	%>
-						<% @products.each do |product| %>
-						<tr>
-							<td><%= product.p_name %></td>
-							<td><%= product.p_price %></td>
-							<td><%= product.p_qty %></td>
-							<td><%= product&.category&.category_name %></td>
-							<td><%= product&.subcategory&.subcategory_name %></td>
-							<td style="display: flex; gap: 5px; justify-content: center; align-items: center;">
-								<%= button_to 'Buy', { controller: :cart_items, product_id: product.id, action_key: 'buy' }, method: :post, class: "btn btn-sm btn-success" %>
-								<%= button_to 'Add to Cart', { controller: :cart_items, product_id: product.id }, method: :post, class: "btn btn-sm btn-primary" %>
-							</td>
-						</tr>
-						<% end %>
-					<% end %>
-
-				<% else %>
-					<% @products.each do |product| %>
-						<tr>
-							<td><%= product.p_name %></td>
-							<td><%= product.p_price %></td>
-						</tr>
-					<% end %>
-				<% end %>
-			</table>
-		</div>
-	</div>
-
-</body>
+<% if @products.empty? && (!user_signed_in? || !current_user.owner? || !current_user.products&.any?) %>
+  <div class="text-center py-5">
+    <i class="fa fa-shopping-basket fa-4x text-muted mb-3"></i>
+    <h3 class="text-muted">No products found</h3>
+    <p>Check back later for more exciting items!</p>
+  </div>
+<% end %>

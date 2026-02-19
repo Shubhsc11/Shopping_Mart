@@ -7,7 +7,7 @@ class Order < ApplicationRecord
   belongs_to :delivery_detail, class_name: 'DeliveryDetail', optional: true
 
   enum :status, { draft: 'draft', placed: 'placed', confirmed: 'confirmed', shipped: 'shipped',
-                  delivered: 'delivered' }
+                  delivered: 'delivered', cancelled: 'cancelled' }
 
   after_initialize :set_default_status, if: :new_record?
 

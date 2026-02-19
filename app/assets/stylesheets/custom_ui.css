@@ -1,0 +1,93 @@
+/* Custom Styles for Shopping Mart */
+
+:root {
+  --primary-color: #198754;
+  --secondary-color: #2c3e50;
+  --accent-color: #e8c06f;
+  --bg-light: #f8f9fa;
+}
+
+body {
+  background-color: var(--bg-light);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: var(--secondary-color);
+}
+
+a {
+  text-decoration: none !important;
+  color: inherit;
+}
+
+a:hover {
+  color: var(--primary-color);
+}
+
+.product-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: none;
+  border-radius: 15px;
+  overflow: hidden;
+  height: 100%;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+}
+
+.product-card .card-body {
+  padding: 1.5rem;
+}
+
+.product-card .card-title {
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+
+.btn-buy {
+  background-color: var(--primary-color);
+  color: white;
+  border-radius: 20px;
+  padding: 0.5rem 1.5rem;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.btn-buy:hover {
+  background-color: #157347;
+  color: white;
+  box-shadow: 0 4px 8px rgba(25, 135, 84, 0.3);
+}
+
+.btn-cart {
+  background-color: #0d6efd;
+  color: white;
+  border-radius: 20px;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+}
+
+.price-tag {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--primary-color);
+}
+
+.category-badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.4em 0.8em;
+  border-radius: 5px;
+  background-color: rgba(25, 135, 84, 0.1);
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+.navbar {
+  padding: 0.8rem 0;
+}
+
+.main-content {
+  padding-top: 2rem;
+  padding-bottom: 4rem;
+}
