@@ -29,7 +29,7 @@ class UsersController < ApplicationController
     return unless current_user.customer?
 
     current_user.update(points: current_user.points + 100)
-    redirect_to order_items_path
+    redirect_to my_cart_path, notice: 'Points added successfully.'
   end
 
   # private

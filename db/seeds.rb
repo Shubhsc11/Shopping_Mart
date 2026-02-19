@@ -20,4 +20,8 @@ customer = User.find_or_create_by(email: 'customer@example.com', roles: 'custome
   user.password_confirmation = 'Password@321'
 end
 
-puts 'Seed data created successfully!'
+User.all.each do |user|
+  Cart.find_or_create_by(user_id: user.id)
+end
+
+puts 'Seed data created/updated successfully!'

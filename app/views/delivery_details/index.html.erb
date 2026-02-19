@@ -1,10 +1,48 @@
 <div class="container" style="padding: 50px; background-color: #e8c06f; border-radius: 15px;">
-	<h2> Your Order Booked Successfully!!! </h2>
+	<div class="d-flex justify-content-between align-items-center">
+		<h4> Add Delivery Address: </h4>
+
+		<% if current_user.delivery_details.count < 5 %>
+			<%= link_to "Add New Address", new_delivery_detail_path(@current_order), class: "btn btn-outline-primary" %>
+		<% else %>
+			<p class="text-danger">You have reached the limit of 5 delivery addresses.</p>
+		<% end %>
+	</div>
 	<br>
-	<h5>Thanks for shopping! Come again ....</h5>
+	<% if @delivery_details.empty? %>
+		<p class="text-danger">No delivery details found. Please add your delivery details.</p>
+	<% else %>
+		<table class="table table-bordered" style="background-color: white;">
+			<thead>
+				<tr style="background-color: #96D4D4;">
+					<th>Full Name</th>
+					<th>Address</th>
+					<th>Contact No</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				<% @delivery_details.each do |detail| %>
+					<tr>
+						<td><%= detail.full_name %></td>
+						<td><%= detail.address %></td>
+						<td><%= detail.contact_no %></td>
+						<td style="display: flex; gap: 5px;">
+							<%= button_to 'Select', { controller: :orders, action: :update, id: @current_order.id, delivery_detail_id: detail.id }, method: :put, class: "btn btn-sm btn-success" %>
+							<%= link_to 'View', delivery_detail_path(detail), class: "btn btn-sm btn-info" %>
+							<%= link_to 'Edit', edit_delivery_detail_path(detail), class: "btn btn-sm btn-warning" %>
+							<%= button_to 'Delete', delivery_detail_path(detail), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-sm btn-danger" %>
+						</td>
+					</tr>
+				<% end %>
+			</tbody>
+		</table>
+	<% end %>
 	<br>
+	<br>
+	<div style="display: flex; justify-content: space-between;">
+		<%= link_to 'Home', root_path, method: :get, class: 'btn btn-outline-success' %>
+  	<%= button_to "Cancel Order", order_path(@current_order), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-outline-danger" %>
+	</div>
 	
-	<h5>Remaining Points : <%= current_user.points %></h5>
-	<br>
-	<h4 class="btn btn-outline-success"><%= button_to "Home", order_path(@current_order), method: :delete, data: { turbo_confirm: "Are you sure?" } %></h4>
 </div>

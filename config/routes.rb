@@ -22,6 +22,8 @@ Rails.application.routes.draw do
   resources :categories
   resources :subcategories
   resources :orders
+  resources :cart_items
+  resources :carts, only: [:index, :destroy]
   resources :order_items
   resources :delivery_details
   resources :payments, only: :index do
@@ -36,8 +38,11 @@ Rails.application.routes.draw do
   post 'orders', to: "orders#create"
 
   post 'order_items/:id/add', to: "order_items#add_quantity", as: "order_item_add"
+  post 'cart_items/:id/add', to: "cart_items#add_quantity", as: "cart_item_add"
+  post 'cart_items/:id/reduce', to: "cart_items#reduce_quantity", as: "cart_item_reduce"
   post 'order_items/:id/reduce', to: "order_items#reduce_quantity", as: "order_item_reduce"
   post 'users/:id/add_point', to: "users#add_points", as: "user_add_points"
+  get 'my_cart', to: 'carts#index'
 
   devise_scope :user do
     get '/users/sign_out', to: 'devise/sessions#destroy'

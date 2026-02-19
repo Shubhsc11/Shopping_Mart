@@ -3,7 +3,7 @@
 
 		table, th, td {
 		  border-collapse: collapse;
-		  font-size: 15pt;
+		  font-size: 12pt;
 		  padding: 5px;
 		  text-align: center;
 		}
@@ -13,7 +13,7 @@
 		  background-color: #96D4D4;
 		}
 		td{
-			border: 2px groove; black;
+			border: 2px groove;
 		}
 
 	</style>
@@ -59,12 +59,12 @@
         
 	        <% if user_signed_in? %>
 	        	<li class="nav-item">
-		          <a class="nav-link" disabled>|| <%= current_user.email %> {<%= current_user.roles %>} ||</a>
+		          <a class="nav-link" disabled>|| <%= current_user.email %> {<%= current_user.roles.humanize %>} ||</a>
 		        </li>
 		      <% end %>
 
 					<li class="nav-item dropdown">
-	          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="true" style="color: lightskyblue; background-color: yellow; border-radius: 10px;">User</a>
+	          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="true" style="color: black; background-color: white; border-radius: 10px;">User</a>
 	          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
 	          	<li class="nav-item dropdown">
 	          		<% if user_signed_in? %>
@@ -86,61 +86,60 @@
 	          </ul>
 	        </li>
 	      </ul>
+
+				<ul class="navbar-nav ms-auto align-items-center">
+					<% if user_signed_in? %>
+						<li class="nav-item me-3">
+							<span class="nav-link text-white">
+								<i class="fa fa-money" aria-hidden="true"></i> Points: <span style="color: black; background-color: white; border-radius: 5px; padding: 2px; font-weight: bold;"><%= current_user.points %></span>
+							</span>
+						</li>
+					<% end %>
+				</ul>
 	    </div>
 	  </div>
 	</nav>
 	<br>
 
-<div style="float: right; margin-right: 20px;">
-	<% if user_signed_in? %>
-		<% if current_user.owner? %>
-			<button type="button" class="btn btn-outline-success" style="margin-left: 20px;">
-			<%= link_to "Create New Product", new_product_path %></button>
-		
-		<% else %>
-			<button type="button" class="btn btn-outline-success" style="margin-left: 20px;">
-			<% if current_user.orders.present? %>
-				<%	item_count = current_user.orders.last.order_items.count %>
+	<div style="float: right; margin-right: 20px;">
+		<% if user_signed_in? %>
+			<% if current_user.owner? %>
+				<button type="button" class="btn btn-outline-success" style="margin-left: 20px;">
+				<%= link_to "Create New Product", new_product_path %></button>
 			<% else %>
-				<% item_count = 0 %>
-			<% end %>	
-			<%= link_to "Cart #{item_count}", order_items_path %></button>
-			<br>
-			<br>
-			<h5>Avalaible Points : <%= current_user.points %></h5>
+				<button type="button" class="btn btn-outline-success" style="margin-right: 25px;">
+					<% item_count = current_user.cart.cart_items.count.presence || 0 	%>
+					<i class="fa fa-cart-plus" aria-hidden="true" style="color: black;"></i>
+					<%= link_to "#{item_count}", my_cart_path %>
+				</button>
+			<% end %>
 		<% end %>
-	<% end %>
-</div>
-<br>
-<br>
+	</div>
 
-<div>
-	<center>
-		<h3 style="text-decoration-line: underline;">Products List</h3>
-		<br>
-		<div>
-			<table>
+	<div style="align-items: center; justify-content: center; display: flex; flex-direction: column;">
+		<h4 style="text-decoration-line: underline;">Products List</h4>
+		<div style="background-color: #e8c06f; border-radius: 10px; padding: 10px;">
+			<table style="border-radius: 10px; border: 1px solid black;">
 				<tr>
-				  <th>Name</th>
-				  <th>Price</th>
-				  <th>Qty.</th>
-				  <% if user_signed_in? %>
-				  	<th>Categories</th>
-				  	<th>SubCategories</th>
-				  	<th>Actions</th>
-				  <% end %>
-				  
+					<th>Name</th>
+					<th>Price</th>
+					<% if user_signed_in? %>
+						<th>Quantity</th>
+						<th>Categories</th>
+						<th>SubCategories</th>
+						<th>Actions</th>
+					<% end %>
 				</tr>
 
 				<% if user_signed_in? %>
 					<% if current_user.owner? && current_user.products %>
 						<% current_user.products.each do |product|%>
 							<tr>
-							  <td><%= product.p_name %></td>
-							  <td><%= product.p_price %></td>
-							  <td><%= product.p_qty %></td>
-					  		<td><%= product&.category&.category_name %></td>
-					  		<td><%= product&.subcategory&.subcategory_name %></td>
+								<td><%= product.p_name %></td>
+								<td><%= product.p_price %></td>
+								<td><%= product.p_qty %></td>
+								<td><%= product&.category&.category_name %></td>
+								<td><%= product&.subcategory&.subcategory_name %></td>
 								<td><p class="btn btn-outline-success"><%= link_to "View", product %></p></td>
 							</tr>
 						<% end %>
@@ -148,15 +147,15 @@
 					<% else	%>
 						<% @products.each do |product| %>
 						<tr>
-						  <td><%= product.p_name %></td>
-						  <td><%= product.p_price %></td>
-						  <td><%= product.p_qty %></td>
-						  <td><%= product&.category&.category_name %></td>
-				  		<td><%= product&.subcategory&.subcategory_name %></td>
-						  <td class="btn btn-outline-success">
-						  <%= button_to "Buy", {:controller => :orders, :product_id => product.id }, 
-						  :method => :post %>
-						  </td>
+							<td><%= product.p_name %></td>
+							<td><%= product.p_price %></td>
+							<td><%= product.p_qty %></td>
+							<td><%= product&.category&.category_name %></td>
+							<td><%= product&.subcategory&.subcategory_name %></td>
+							<td style="display: flex; gap: 5px; justify-content: center; align-items: center;">
+								<%= button_to 'Buy', { controller: :cart_items, product_id: product.id, action_key: 'buy' }, method: :post, class: "btn btn-sm btn-success" %>
+								<%= button_to 'Add to Cart', { controller: :cart_items, product_id: product.id }, method: :post, class: "btn btn-sm btn-primary" %>
+							</td>
 						</tr>
 						<% end %>
 					<% end %>
@@ -164,15 +163,13 @@
 				<% else %>
 					<% @products.each do |product| %>
 						<tr>
-						  <td><%= product.p_name %></td>
-						  <td><%= product.p_price %></td>
-						  <td><%= product.p_qty %></td>
+							<td><%= product.p_name %></td>
+							<td><%= product.p_price %></td>
 						</tr>
 					<% end %>
 				<% end %>
 			</table>
 		</div>
-	</center>
-</div>
+	</div>
 
 </body>

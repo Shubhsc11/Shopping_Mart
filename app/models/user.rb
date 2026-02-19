@@ -11,14 +11,23 @@ class User < ApplicationRecord
   has_many :products, class_name: 'Product', dependent: :destroy
   has_many :orders, class_name: 'Order', dependent: :destroy
   has_many :delivery_details, class_name: 'DeliveryDetail', dependent: :destroy
+  has_one :cart, class_name: 'Cart', dependent: :destroy
 
   validates :roles, presence: true
 
-  after_create :set_credit_points
+  after_create :set_credit_points, :set_default_role, :add_cart
 
   def set_credit_points
     return unless customer?
 
     update(points: 5000)
+  end
+
+  def set_default_role
+    update(roles: 'customer') unless roles.present?
+  end
+
+  def add_cart
+    Cart.create(user_id: self.id)
   end
 end
