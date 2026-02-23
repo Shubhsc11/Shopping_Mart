@@ -88,7 +88,14 @@ class OrdersController < ApplicationController
   def update
     @order = current_user.orders.find(params[:id])
     if @order.update(status: 'placed', delivery_detail_id: params[:delivery_detail_id])
-      current_user.update(points: current_user.points - @order.sub_total)
+      begin
+        current_user.update(points: current_user.points - @order.sub_total)
+      rescue ActiveRecord::RecordInvalid => e
+        @order.update(status: 'draft')
+        redirect_to order_path(@order), alert: "Failed to place order: #{e.message}"
+        return
+      end
+
       @order.order_items.each do |order_item|
         product = Product.find(order_item.product_id)
         product.update(p_qty: product.p_qty - order_item.item_qty)

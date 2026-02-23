@@ -4,6 +4,7 @@ class ProductsController < ApplicationController
   before_action :find_product, only: %i[show edit update destroy]
 
   def index
+    @categories = Category.includes(:products).all
     @products = Product.order(created_at: :asc)
     respond_to do |format|
       format.html

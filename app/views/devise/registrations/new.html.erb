@@ -1,40 +1,97 @@
-<div class="container" style="padding: 100px; background-color: #e8c06f; border-radius: 15px;">
-  <center>
+<div class="container d-flex align-items-center justify-content-center py-5" style="min-height: 85vh;">
+  <div class="card border-0 shadow-lg overflow-hidden" style="max-width: 600px; width: 100%; border-radius: 24px;">
+    <div class="row g-0">
+      <div class="col-12 p-5 bg-white">
+        <div class="text-center mb-5">
+          <div class="d-inline-block bg-success bg-opacity-10 p-3 rounded-circle mb-3">
+            <i class="fa fa-user-plus fa-3x text-success"></i>
+          </div>
+          <h2 class="fw-bold text-dark">Create Account</h2>
+          <p class="text-muted">Join Shopping Mart today and experience a premium way to shop.</p>
+        </div>
 
-  <h2>Sign up</h2>
+        <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: "needs-validation" }) do |f| %>
+          <%= render "devise/shared/error_messages", resource: resource %>
 
-  <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-    <%= render "devise/shared/error_messages", resource: resource %>
+          <div class="mb-4">
+            <%= f.label :email, class: "form-label fw-bold small text-uppercase tracking-wider" %>
+            <div class="input-group">
+              <span class="input-group-text bg-light border-end-0 rounded-start-pill px-3">
+                <i class="fa fa-envelope text-muted"></i>
+              </span>
+              <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control bg-light border-start-0 rounded-end-pill px-3 py-2", placeholder: "your@email.com" %>
+            </div>
+          </div>
 
-    <div class="field">
-      <%= f.label :email %><br />
-      <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+          <div class="row mb-4">
+            <div class="col-md-6">
+              <%= f.label :password, class: "form-label fw-bold small text-uppercase tracking-wider" %>
+              <% if @minimum_password_length %>
+                <span class="text-muted small ms-1">(<%= @minimum_password_length %> min)</span>
+              <% end %>
+              <div class="input-group">
+                <span class="input-group-text bg-light border-end-0 rounded-start-pill px-3">
+                  <i class="fa fa-lock text-muted"></i>
+                </span>
+                <%= f.password_field :password, autocomplete: "new-password", class: "form-control bg-light border-start-0 rounded-end-pill px-3 py-2", placeholder: "••••••••" %>
+              </div>
+            </div>
+            <div class="col-md-6 mt-4 mt-md-0">
+              <%= f.label :password_confirmation, class: "form-label fw-bold small text-uppercase tracking-wider" %>
+              <div class="input-group">
+                <span class="input-group-text bg-light border-end-0 rounded-start-pill px-3">
+                  <i class="fa fa-check-circle text-muted"></i>
+                </span>
+                <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-control bg-light border-start-0 rounded-end-pill px-3 py-2", placeholder: "••••••••" %>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-5">
+            <%= f.label :roles, "I am a...", class: "form-label fw-bold small text-uppercase tracking-wider" %>
+            <div class="d-flex gap-3">
+              <div class="flex-grow-1">
+                <%= f.radio_button :roles, 'customer', class: "btn-check", id: "role_customer", checked: true %>
+                <label class="btn btn-outline-primary w-100 rounded-pill py-2 fw-bold" for="role_customer">
+                  <i class="fa fa-shopping-bag me-1"></i> Customer
+                </label>
+              </div>
+              <div class="flex-grow-1">
+                <%= f.radio_button :roles, 'owner', class: "btn-check", id: "role_owner" %>
+                <label class="btn btn-outline-success w-100 rounded-pill py-2 fw-bold" for="role_owner">
+                  <i class="fa fa-store me-1"></i> Shop Owner
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="d-grid mb-4">
+            <%= f.submit "SIGN UP", class: "btn btn-success rounded-pill fw-bold py-3 shadow-sm" %>
+          </div>
+        <% end %>
+
+        <div class="text-center mt-4">
+          <p class="text-muted small mb-0">Already have an account?</p>
+          <%= link_to "Log in here", new_session_path(resource_name), class: "fw-bold text-success text-decoration-none" %>
+        </div>
+
+        <div class="mt-4 pt-4 border-top text-center">
+          <%= link_to root_path, class: "text-muted small text-decoration-none" do %>
+            <i class="fa fa-arrow-left me-1"></i> Back to Homepage
+          <% end %>
+        </div>
+      </div>
     </div>
-
-    <div class="field">
-      <%= f.label :password %>
-      <% if @minimum_password_length %>
-      <em>(<%= @minimum_password_length %> characters minimum)</em>
-      <% end %><br />
-      <%= f.password_field :password, autocomplete: "new-password" %>
-    </div>
-
-    <div class="field">
-      <%= f.label :password_confirmation %><br />
-      <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-    </div>
-
-    <div>
-      <%= f.label :role %><br>
-      <%= f.select :roles, ['owner', 'customer']%>
-    </div>
-    <br>
-
-    <div class="actions">
-      <%= f.submit "Sign up" %>
-    </div>
-  <% end %>
-
-  <%= render "devise/shared/links" %>
-  </center>
+  </div>
 </div>
+
+<style>
+  .tracking-wider { letter-spacing: 0.05em; }
+  .form-control:focus {
+    box-shadow: none;
+    border-color: #dee2e6;
+  }
+  .input-group-text {
+    border-color: #dee2e6;
+  }
+</style>

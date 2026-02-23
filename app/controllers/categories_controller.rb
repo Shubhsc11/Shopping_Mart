@@ -7,13 +7,12 @@ class CategoriesController < ApplicationController
   end
 
   def show
-    @products = @category.products
   end
 
   private
 
   def set_category
-    @category = Category.includes(:products).find(params[:id])
+    @category = Category.includes(subcategories: :products).find(params[:id])
   end
 
   def category_params

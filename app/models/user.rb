@@ -16,6 +16,7 @@ class User < ApplicationRecord
   validates :roles, presence: true
 
   after_create :set_credit_points, :set_default_role, :add_cart
+  around_update :check_credit_points
 
   def set_credit_points
     return unless customer?
@@ -29,5 +30,15 @@ class User < ApplicationRecord
 
   def add_cart
     Cart.create(user_id: self.id)
+  end
+
+  def check_credit_points
+    return unless customer?
+
+    if self.points < 0
+      errors.add(:points, "You don't have enough credit points to place this order.")
+    else
+      yield
+    end
   end
 end

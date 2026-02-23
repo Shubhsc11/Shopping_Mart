@@ -1,48 +1,116 @@
-<div class="container" style="padding: 50px; background-color: #e8c06f; border-radius: 15px;">
-	<div class="d-flex justify-content-between align-items-center">
-		<h4> Add Delivery Address: </h4>
+<div class="container" style="padding: 50px; background-color: #f8f9fa; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+  <div class="card mb-4 border-0 shadow-sm" style="background-color: #e8c06f; border-radius: 12px;">
+    <div class="card-body p-4">
+      <div class="row align-items-center">
+        <div class="col-md-6">
+          <h4 class="mb-0 fw-bold">Select Delivery Address</h4>
+        </div>
+        <div class="col-md-6 text-md-end mt-3 mt-md-0">
+          <div class="points-info glass-effect p-3 rounded shadow-sm" style="background: rgba(255,255,255,0.3); backdrop-filter: blur(5px);">
+            <div class="row g-2">
+              <div class="col-6 text-start">
+                <span class="text-muted small d-block">Billing Points</span>
+                <span class="fw-bold h5 mb-0 text-danger"><%= number_with_delimiter(@current_order.sub_total) %></span>
+              </div>
+              <div class="col-6 text-end">
+                <span class="text-muted small d-block">Remaining Points</span>
+                <span class="fw-bold h5 mb-0 text-success"><%= number_with_delimiter(@available_points) %></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-		<% if current_user.delivery_details.count < 5 %>
-			<%= link_to "Add New Address", new_delivery_detail_path(@current_order), class: "btn btn-outline-primary" %>
-		<% else %>
-			<p class="text-danger">You have reached the limit of 5 delivery addresses.</p>
-		<% end %>
-	</div>
-	<br>
-	<% if @delivery_details.empty? %>
-		<p class="text-danger">No delivery details found. Please add your delivery details.</p>
-	<% else %>
-		<table class="table table-bordered" style="background-color: white;">
-			<thead>
-				<tr style="background-color: #96D4D4;">
-					<th>Full Name</th>
-					<th>Address</th>
-					<th>Contact No</th>
-					<th>Actions</th>
-				</tr>
-			</thead>
-			<tbody>
-				<% @delivery_details.each do |detail| %>
-					<tr>
-						<td><%= detail.full_name %></td>
-						<td><%= detail.address %></td>
-						<td><%= detail.contact_no %></td>
-						<td style="display: flex; gap: 5px;">
-							<%= button_to 'Select', { controller: :orders, action: :update, id: @current_order.id, delivery_detail_id: detail.id }, method: :put, class: "btn btn-sm btn-success" %>
-							<%= link_to 'View', delivery_detail_path(detail), class: "btn btn-sm btn-info" %>
-							<%= link_to 'Edit', edit_delivery_detail_path(detail), class: "btn btn-sm btn-warning" %>
-							<%= button_to 'Delete', delivery_detail_path(detail), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-sm btn-danger" %>
-						</td>
-					</tr>
-				<% end %>
-			</tbody>
-		</table>
-	<% end %>
-	<br>
-	<br>
-	<div style="display: flex; justify-content: space-between;">
-		<%= link_to 'Home', root_path, method: :get, class: 'btn btn-outline-success' %>
-  	<%= button_to "Cancel Order", order_path(@current_order), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-outline-danger" %>
-	</div>
-	
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h5 class="mb-0 text-dark">Available Addresses:</h5>
+    <% if current_user.delivery_details.count < 5 %>
+      <%= link_to new_delivery_detail_path(@current_order), class: "btn btn-outline-primary rounded-pill px-4" do %>
+        <i class="fa fa-plus-circle me-1"></i> Add New Address
+      <% end %>
+    <% else %>
+      <span class="badge bg-soft-danger text-danger border border-danger rounded-pill px-3">
+        Address limit reached (5/5)
+      </span>
+    <% end %>
+  </div>
+
+  <% if @delivery_details.empty? %>
+    <div class="text-center py-5 bg-white rounded shadow-sm">
+      <i class="fa fa-map-marker-alt fa-3x text-muted mb-3"></i>
+      <p class="text-muted h5">No delivery addresses found. Please add one to continue.</p>
+    </div>
+  <% else %>
+    <%= form_with url: order_path(@current_order), method: :patch, data: { controller: "address-selection" } do |f| %>
+      <div class="table-responsive">
+        <table class="table table-hover align-middle bg-white rounded shadow-sm overflow-hidden" style="border-collapse: separate; border-spacing: 0;">
+          <thead class="bg-primary text-white">
+            <tr>
+              <th class="ps-4">Select</th>
+              <th>Full Name</th>
+              <th>Address</th>
+              <th>Contact No</th>
+              <th class="pe-4 text-center">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @delivery_details.each do |detail| %>
+              <tr class="address-row" style="cursor: pointer;" onclick="this.querySelector('input').click()">
+                <td class="ps-4">
+                  <div class="form-check">
+                    <%= radio_button_tag :delivery_detail_id, detail.id, false, class: "form-check-input custom-radio", data: { action: "change->address-selection#toggleButton" } %>
+                  </div>
+                </td>
+                <td class="fw-bold"><%= detail.full_name %></td>
+                <td class="text-muted"><%= detail.address %></td>
+                <td><i class="fa fa-phone small me-1"></i> <%= detail.contact_no %></td>
+                <td class="pe-4 text-center">
+                  <div class="btn-group shadow-sm rounded-pill overflow-hidden">
+                    <%= link_to delivery_detail_path(detail), class: "btn btn-sm btn-light", title: "View" do %>
+                      <i class="fa fa-eye text-info"></i>
+                    <% end %>
+                    <%= link_to edit_delivery_detail_path(detail), class: "btn btn-sm btn-light border-start border-end", title: "Edit" do %>
+                      <i class="fa fa-edit text-warning"></i>
+                    <% end %>
+                    <%= button_to delivery_detail_path(detail), method: :delete, form: { data: { turbo_confirm: 'Delete this address?' } }, class: "btn btn-sm btn-light", title: "Delete" do %>
+                      <i class="fa fa-trash text-danger"></i>
+                    <% end %>
+                  </div>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="mt-5 d-flex justify-content-between align-items-center">
+        <%= link_to root_path, class: 'btn btn-outline-secondary rounded-pill px-4' do %>
+          <i class="fa fa-arrow-left me-1"></i> Continue Shopping
+        <% end %>
+        
+        <div class="d-flex gap-2">
+          <%= button_to order_path(@current_order), method: :delete, form: { data: { turbo_confirm: "Are you sure you want to cancel your order?" } }, class: "btn btn-outline-danger rounded-pill px-4", style: "font-size: small" do %>
+            <i class="fa fa-times me-1"></i> Cancel Order
+          <% end %>
+          
+          <%= f.submit "Book Order", class: "btn btn-success btn-lg rounded-pill px-5 shadow", data: { "address-selection-target": "submitBtn" }, disabled: true %>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
 </div>
+
+<style>
+  .address-row:hover {
+    background-color: #f8f9fa !important;
+  }
+  .custom-radio {
+    width: 1.5rem;
+    height: 1.5rem;
+    border-color: #0d6efd;
+  }
+  .bg-soft-danger {
+    background-color: rgba(220, 53, 69, 0.1);
+  }
+</style>

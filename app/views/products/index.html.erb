@@ -1,11 +1,13 @@
 <div class="d-flex justify-content-between align-items-center mb-4">
-  <h1 class="h2 fw-bold text-dark mb-0">Our Products</h1>
+  <h1 class="h2 fw-bold text-dark mb-0">
+    <%= user_signed_in? && current_user.owner? ? "My Inventory" : "Our Products" %>
+  </h1>
   
   <div class="actions">
     <% if user_signed_in? %>
       <% if current_user.owner? %>
         <%= link_to new_product_path, class: "btn btn-success rounded-pill px-4 shadow-sm" do %>
-          <i class="fa fa-plus me-2"></i> Create New Product
+          <i class="fa fa-plus me-2"></i> Add Product
         <% end %>
       <% else %>
         <% item_count = current_user.cart&.cart_items&.count || 0 %>
@@ -22,91 +24,111 @@
   </div>
 </div>
 
-<div class="row g-4">
-  <% if user_signed_in? && current_user.owner? && current_user.products %>
+<% if user_signed_in? && current_user.owner? %>
+  <div class="row g-4">
     <% current_user.products.each do |product| %>
       <div class="col-12 col-md-6 col-lg-4">
         <div class="card product-card shadow-sm h-100">
-          <div class="card-body d-flex flex-column">
+          <div class="card-body d-flex flex-column p-4">
             <div class="d-flex justify-content-between align-items-start mb-2">
               <h5 class="card-title text-truncate" title="<%= product.p_name %>"><%= product.p_name %></h5>
               <span class="price-tag">$<%= product.p_price %></span>
             </div>
-            
             <div class="mb-3">
               <% if product.category %>
                 <span class="category-badge me-1"><%= product.category.category_name %></span>
               <% end %>
-              <% if product.subcategory %>
-                <small class="text-muted"><%= product.subcategory.subcategory_name %></small>
-              <% end %>
             </div>
-
             <div class="mt-auto">
-              <div class="d-flex justify-content-between align-items-center mb-3">
-                <span class="badge bg-light text-dark border">Qty: <%= product.p_qty %></span>
-              </div>
+              <span class="badge bg-light text-dark border mb-3">Qty: <%= product.p_qty %></span>
               <%= link_to product, class: "btn btn-outline-success w-100 rounded-pill" do %>
-                <i class="fa fa-eye me-1"></i> View Details
+                <i class="fa fa-eye me-1"></i> Manage
               <% end %>
             </div>
           </div>
         </div>
       </div>
     <% end %>
+  </div>
+<% else %>
+  <% @categories.each do |category| %>
+    <% next if category.products.empty? %>
+    <section class="category-section mb-5">
+      <div class="category-header">
+        <h3 class="fw-bold mb-0 text-dark">
+          <%= category.category_name %>
+        </h3>
+        <%= link_to category_path(category), class: "view-all-btn btn btn-primary rounded-pill px-4 text-white text-decoration-none shadow-sm" do %>
+          VIEW ALL <i class="fa fa-chevron-right ms-1" style="font-size: 0.7rem;"></i>
+        <% end %>
+      </div>
 
-  <% else %>
-    <% @products.each do |product| %>
-      <div class="col-12 col-md-6 col-lg-4">
-        <div class="card product-card shadow-sm h-100 border-0">
-          <div class="card-body d-flex flex-column p-4">
-            <div class="d-flex justify-content-between align-items-start mb-2">
-              <h5 class="card-title h5 mb-0"><%= product.p_name %></h5>
-              <span class="price-tag">$<%= product.p_price %></span>
-            </div>
+      <div class="scroll-container">
+        <% category.products.limit(10).each do |product| %>
+          <div class="scroll-item">
+            <div class="card product-card shadow-sm h-100 border-0">
+              <div class="card-body d-flex flex-column p-4">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                  <h5 class="card-title h5 mb-0 text-truncate" style="max-width: 150px;"><%= product.p_name %></h5>
+                  <span class="price-tag">$<%= product.p_price %></span>
+                </div>
 
-            <div class="mb-3">
-              <% if product.category %>
-                <%= link_to product.category.category_name, product.category, class: "category-badge" %>
-              <% end %>
-              <% if product.subcategory %>
-                <span class="ms-1 text-muted small">• <%= product.subcategory.subcategory_name %></span>
-              <% end %>
-            </div>
-
-            <p class="text-muted small mb-4">
-              Availability: <span class="fw-bold <%= product.p_qty > 0 ? 'text-success' : 'text-danger' %>">
-                <%= product.p_qty > 0 ? "#{product.p_qty} in stock" : "Out of stock" %>
-              </span>
-            </p>
-
-            <div class="mt-auto">
-              <% if user_signed_in? %>
-                <div class="d-flex gap-2">
-                  <%= button_to cart_items_path(product_id: product.id, action_key: 'buy'), method: :post, class: "btn btn-buy flex-grow-1" do %>
-                    Buy Now
+                <div class="mb-3">
+                  <% if product.category %>
+                    <span class="category-badge"><%= product.category.category_name %></span>
                   <% end %>
-                  <%= button_to cart_items_path(product_id: product.id), method: :post, class: "btn btn-outline-primary rounded-pill px-3" do %>
-                    <i class="fa fa-cart-plus"></i>
+                  <% if product.subcategory %>
+                    <span class="ms-1 text-muted small">• <%= product.subcategory.subcategory_name %></span>
                   <% end %>
                 </div>
-              <% else %>
-                <%= link_to new_user_session_path, class: "btn btn-buy w-100" do %>
-                  Sign in to Buy
-                <% end %>
-              <% end %>
+
+                <p class="text-muted small mb-4">
+                  Availability: <span class="fw-bold <%= product.p_qty > 0 ? 'text-success' : 'text-danger' %>">
+                    <%= product.p_qty > 0 ? "#{product.p_qty} in stock" : "Out of stock" %>
+                  </span>
+                </p>
+
+                <div class="mt-auto">
+                  <% if user_signed_in? %>
+										<% if product.p_qty > 0 %>
+                    	<div class="d-flex gap-2">
+												<%= button_to cart_items_path(product_id: product.id, action_key: 'buy'), method: :post, class: "btn btn-buy flex-grow-1" do %>
+													Buy Now
+												<% end %>
+												<%= button_to cart_items_path(product_id: product.id), method: :post, class: "btn btn-outline-primary rounded-pill px-3" do %>
+													<i class="fa fa-cart-plus"></i>
+												<% end %>
+                    	</div>
+										<% else %>
+											<span class="text-muted">Currently unavailable</span>
+										<% end %>
+                  <% else %>
+                    <%= link_to new_user_session_path, class: "btn btn-buy w-100" do %>
+                      Sign in to Buy
+                    <% end %>
+                  <% end %>
+                </div>
+              </div>
             </div>
           </div>
+        <% end %>
+        <div class="scroll-item d-flex align-items-center justify-content-center">
+           <%= link_to category_path(category), class: "text-center text-primary fw-bold text-decoration-none" do %>
+             <div class="rounded-circle bg-primary text-white mb-2 mx-auto d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+               <i class="fa fa-arrow-right"></i>
+             </div>
+             View More
+           <% end %>
         </div>
       </div>
-    <% end %>
+    </section>
   <% end %>
-</div>
+<% end %>
 
-<% if @products.empty? && (!user_signed_in? || !current_user.owner? || !current_user.products&.any?) %>
+<% if (user_signed_in? && current_user.owner? && current_user.products.empty?) || (@categories.map(&:products).flatten.empty?) %>
   <div class="text-center py-5">
     <i class="fa fa-shopping-basket fa-4x text-muted mb-3"></i>
-    <h3 class="text-muted">No products found</h3>
-    <p>Check back later for more exciting items!</p>
+    <h3 class="text-muted">No products available</h3>
+    <p>Check back later for new arrivals.</p>
   </div>
 <% end %>

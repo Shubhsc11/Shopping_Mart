@@ -1,44 +1,73 @@
-<body>
-	  <div class="container" style="padding: 100px; margin-top: 10px; background-color: #e8c06f; border-radius: 15px;">
-
-    <h1 style="text-align: center;" class="animate__animated animate__rubberBand"><strong><i><u>About Us</u></i></strong>
-    </h1>
-
-    <div class="row">
-      <div class="col-sm-6">
-        <p style="font-size: 20pt; font-family: fantasy; text-align: justify;">We are the <mark style="background-color: lightskyblue;">Shooping Mart</mark>. We
-        	provide the best facilities and product's quality to the customers. We are dealing in this field since 2010 and we have best advisor's, quality checker's and best employee's to grow our community and provide best product facilities to the customer. We believe in the rule of- <mark style="text-transform: uppercase;"> 'If customer is happy, so God will be happy.'</mark> So, please come in this world of shooping, that is, <b>"Shopping Mart"</b> to make themselves happy.
-          <br>
-          For more details:- <%= link_to 'Contact Us', new_contact_path %></p>
-      </div>
-
-      <div class="col-sm-6">
-      	<%= image_tag "1.jpg", {height: 300} %>
+<div class="container py-5">
+  <!-- Hero Section -->
+  <div class="text-center mb-5 pb-5">
+    <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill fw-bold mb-3">OUR STORY</span>
+    <h1 class="display-4 fw-bold text-dark mb-4">Redefining Quality & Service</h1>
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <p class="lead text-muted lh-lg">
+          We are <strong>Shopping Mart</strong>. Since 2010, we've been dedicated to providing the highest quality products and facilities to our community. Our mission is built on a simple yet profound rule: 
+          <span class="text-primary fw-bold italic">"When our customers are happy, we fulfill our purpose."</span>
+        </p>
       </div>
     </div>
-    <br>
-
-    <div class="row">
-      <div class="col-sm-6">
-        <%= image_tag "3.jpg", {height: 300} %>
-      </div>
-     
-      <div class="col-sm-6">
-        <%= image_tag "5.jpg", {height: 300} %>
-      </div>
-    </div>
-    <br>
-    <div class="row">
-      <div class="col-sm-6">
-        <%= image_tag "7.jpg", {height: 300} %>
-      </div>
-
-      <div class="col-sm-6">
-        <%= image_tag "6.jpg", {height: 300} %>
-      </div>
-    </div>
-    <br>
-    <button class="btn btn-outline-success"><%= link_to 'Back', :back%></button>
   </div>
 
-</body>
+  <!-- Content Section -->
+  <div class="row align-items-center mb-5 pb-5">
+    <div class="col-lg-6 mb-4 mb-lg-0">
+      <div class="pe-lg-5">
+        <h2 class="fw-bold text-dark mb-3">Over a Decade of Excellence</h2>
+        <p class="text-muted mb-4 lh-base">
+          Our journey began with a vision to create a marketplace where quality meets trust. With a team of expert advisors, dedicated quality checkers, and passionate employees, we ensure that every product on our shelves meets the standard you deserve.
+        </p>
+        <ul class="list-unstyled mb-4">
+          <li class="mb-2 d-flex align-items-center"><i class="fa fa-check-circle text-success me-2"></i> Best-in-class product facilities</li>
+          <li class="mb-2 d-flex align-items-center"><i class="fa fa-check-circle text-success me-2"></i> Rigorous quality check processes</li>
+          <li class="mb-2 d-flex align-items-center"><i class="fa fa-check-circle text-success me-2"></i> Dedicated advisor ecosystem</li>
+        </ul>
+        <%= link_to new_contact_path, class: "btn btn-primary rounded-pill px-4 py-2 fw-bold" do %>
+          <i class="fa fa-envelope me-2"></i> Get in Touch
+        <% end %>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="position-relative">
+        <%= image_tag "1.jpg", class: "img-fluid rounded-4 shadow-lg", alt: "Shopping Mart Team", style: "width: 100%; object-fit: cover; height: 400px;" %>
+        <div class="position-absolute bottom-0 start-0 p-4 bg-white rounded-end-4 shadow-sm d-none d-md-block" style="margin-left: -20px; margin-bottom: 20px;">
+          <h5 class="fw-bold mb-0">Est. 2010</h5>
+          <p class="text-muted small mb-0">Founded in Indore</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gallery Section -->
+  <div class="row g-4 mb-5 pb-5">
+    <div class="col-md-6 col-lg-3">
+      <%= image_tag "3.jpg", class: "img-fluid rounded-4 shadow-sm gallery-img", style: "height: 250px; width: 100%; object-fit: cover;" %>
+    </div>
+    <div class="col-md-6 col-lg-3">
+      <%= image_tag "5.jpg", class: "img-fluid rounded-4 shadow-sm gallery-img", style: "height: 250px; width: 100%; object-fit: cover;" %>
+    </div>
+    <div class="col-md-6 col-lg-3">
+      <%= image_tag "7.jpg", class: "img-fluid rounded-4 shadow-sm gallery-img", style: "height: 250px; width: 100%; object-fit: cover;" %>
+    </div>
+    <div class="col-md-6 col-lg-3">
+      <%= image_tag "6.jpg", class: "img-fluid rounded-4 shadow-sm gallery-img", style: "height: 250px; width: 100%; object-fit: cover;" %>
+    </div>
+  </div>
+
+  <!-- Footer Action -->
+  <div class="text-center pt-4 border-top">
+    <%= link_to root_path, class: "btn btn-outline-secondary rounded-pill px-4" do %>
+      <i class="fa fa-home me-2"></i> Back to Home
+    <% end %>
+  </div>
+</div>
+
+<style>
+  .gallery-img { transition: transform 0.3s ease; }
+  .gallery-img:hover { transform: scale(1.05); }
+  .italic { font-style: italic; }
+</style>
