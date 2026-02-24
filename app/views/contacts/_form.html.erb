@@ -1,173 +1,143 @@
-<head>
-  <style type="text/css">
-    .fa {
-      /*padding: 10px;*/
-      font-size: 30px;
-      width: 30px;
-      text-align: center;
-      text-decoration: none;
-      margin: 5px 2px;
-    }
-
-    .fa:hover {
-        opacity: 0.7;
-    }
-
-    .fa-facebook {
-      background: #3B5998;
-      color: white;
-      margin-left: 5px;
-      border-radius: 15px;
-      animation: bounce;
-      animation-duration: 0.5s;
-    }
-
-    .fa-twitter {
-      background: #55ACEE;
-      color: white;
-      margin-left: 5px;
-      border-radius: 30px;
-      animation: bounce;
-      animation-duration: 1s;
-    }
-
-    .fa-google {
-      background: #dd4b39;
-      color: white;
-      margin-left: 5px;
-      border-radius: 30px;
-      animation: bounce;
-      animation-duration: 1.5s;
-    }
-
-    .fa-linkedin {
-      background: #007bb5;
-      color: white;
-      margin-left: 5px;
-      /*border-radius: 30px;*/
-      animation: bounce;
-      animation-duration: 2s;
-    }
-
-    .fa-instagram {
-      background: #125688;
-      color: white;
-      animation: bounce;
-      animation-duration: 2.5s;
-    }
-
-  </style>
-</head>
-
-<body>
-  <div id="contact" class="container" style="padding: 50px; background-color: #e8c06f; border-radius: 15px;">
-    <h1 style="text-align: center; color: white;" class="animate__animated animate__bounceIn"><strong><i><u>Contact Us</u></i></strong>
-    </h1>
-
-    <div class="container">
-      <div class="row">
-        <% if user_signed_in? %>
-          <div class="col-sm-6">
-            <%= form_with model: contact do |form| %>
-            <div>
-              <%= form.label :first_name %><br>
-              <%= form.text_field :first_name %>
-              <% @contact.errors.full_messages_for(:first_name).each do |message| %>
-                <div><%= message %></div>
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <div class="card border-0 shadow-lg overflow-hidden" style="border-radius: 24px;">
+        <div class="row g-0">
+          <!-- Left Column: Form -->
+          <div class="col-lg-7 p-5 bg-white">
+            <h2 class="fw-bold text-dark mb-4">Send us a Message</h2>
+            
+            <%= form_with model: contact, class: "needs-validation" do |form| %>
+              <% if contact.errors.any? %>
+                <div class="alert alert-danger rounded-3 small mb-4">
+                  <ul class="mb-0">
+                    <% contact.errors.full_messages.each do |message| %>
+                      <li><%= message %></li>
+                    <% end %>
+                  </ul>
+                </div>
               <% end %>
-              
-            </div>
 
-            <div>
-              <%= form.label :last_name %><br>
-              <%= form.text_area :last_name %><br>
-              <% @contact.errors.full_messages_for(:last_name).each do |message| %>
-                <div><%= message %></div>
-              <% end %>
-            </div>
+              <div class="row mb-4">
+                <div class="col-md-6">
+                  <%= form.label :first_name, class: "form-label fw-bold small text-uppercase tracking-wider" %>
+                  <%= form.text_field :first_name, class: "form-control bg-light border-0 rounded-pill px-3 py-2", placeholder: "First Name" %>
+                </div>
+                <div class="col-md-6 mt-4 mt-md-0">
+                  <%= form.label :last_name, class: "form-label fw-bold small text-uppercase tracking-wider" %>
+                  <%= form.text_field :last_name, class: "form-control bg-light border-0 rounded-pill px-3 py-2", placeholder: "Last Name" %>
+                </div>
+              </div>
 
-            <div>
-              <%= form.label :email %><br>
-              <%= form.text_area :email %><br>
-              <% @contact.errors.full_messages_for(:email).each do |message| %>
-                <div><%= message %></div>
-              <% end %>
-            </div>
+              <div class="mb-4">
+                <%= form.label :email, class: "form-label fw-bold small text-uppercase tracking-wider" %>
+                <%= form.email_field :email, class: "form-control bg-light border-0 rounded-pill px-3 py-2", placeholder: "your@email.com" %>
+              </div>
 
-            <div>
-              <%= form.label :address %><br>
-              <%= form.text_area :address %><br>
-              <% @contact.errors.full_messages_for(:address).each do |message| %>
-                <div><%= message %></div>
-              <% end %>
-            </div>
+              <div class="mb-4">
+                <%= form.label :address, class: "form-label fw-bold small text-uppercase tracking-wider" %>
+                <%= form.text_field :address, class: "form-control bg-light border-0 rounded-pill px-3 py-2", placeholder: "City, Country" %>
+              </div>
 
-            <div>
-              <%= form.label :suggetion %><br>
-              <%= form.text_area :suggetion %><br>
-              <% @contact.errors.full_messages_for(:suggetion).each do |message| %>
-                <div><%= message %></div>
-              <% end %>
-            </div>
+              <div class="mb-4">
+                <%= form.label :suggetion, "Your Message", class: "form-label fw-bold small text-uppercase tracking-wider" %>
+                <%= form.text_area :suggetion, rows: 4, class: "form-control bg-light border-0 rounded-4 px-3 py-3", placeholder: "How can we help you?" %>
+              </div>
 
-            <div>
-              <button class="btn btn-outline-success" type="submit">
-                <%= form.submit %>
-              </button>
-            </div>
+              <div class="d-grid pt-2">
+                <%= form.submit "SEND MESSAGE", class: "btn btn-primary rounded-pill fw-bold py-3 shadow-sm hover-lift" %>
+              </div>
             <% end %>
           </div>
-        <% end %>
 
-        <div class="col-sm-6">
-          <h3>Address:</h3>
-          <p>101, Ramnagar, Near by xyz hospital, Indore-452001, MP</p>
-          <br>
+          <!-- Right Column: Info -->
+          <div class="col-lg-5 p-5 text-white d-flex flex-column justify-content-between" style="background: linear-gradient(135deg, #2c3e50, #1a252f);">
+            <div>
+              <h2 class="fw-bold mb-4">Contact Info</h2>
+              <p class="text-white-50 mb-5">Don't hesitate to reach out to us. We're here to help you with any questions or concerns.</p>
 
-          <h2>Contact Details:-</h2>
-          <h3>Email:</h3>
-          <p>xyz@littlestars.com</p>
-          <br>
+              <div class="d-flex align-items-center mb-4">
+                <div class="bg-white bg-opacity-10 p-3 rounded-circle me-3">
+                  <i class="fa fa-map-marker fa-fw text-primary"></i>
+                </div>
+                <div>
+                  <h6 class="mb-0 fw-bold">Office Address</h6>
+                  <p class="mb-0 text-white-50 small">101, Ramnagar, Indore-452001, MP</p>
+                </div>
+              </div>
 
-          <h3>Contact No.:</h3>
-          <p>+91-***********</p>
-          <br>
+              <div class="d-flex align-items-center mb-4">
+                <div class="bg-white bg-opacity-10 p-3 rounded-circle me-3">
+                  <i class="fa fa-phone fa-fw text-success"></i>
+                </div>
+                <div>
+                  <h6 class="mb-0 fw-bold">Phone Number</h6>
+                  <p class="mb-0 text-white-50 small">+91 987 654 3210</p>
+                </div>
+              </div>
 
+              <div class="d-flex align-items-center mb-4">
+                <div class="bg-white bg-opacity-10 p-3 rounded-circle me-3">
+                  <i class="fa fa-envelope fa-fw text-info"></i>
+                </div>
+                <div>
+                  <h6 class="mb-0 fw-bold">Email Support</h6>
+                  <p class="mb-0 text-white-50 small">support@littlestars.com</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-auto">
+              <h6 class="fw-bold mb-3 text-uppercase tracking-wider">Connect with us</h6>
+              <div class="d-flex gap-2">
+                <a href="#" class="social-btn"><i class="fa fa-facebook"></i></a>
+                <a href="#" class="social-btn"><i class="fa fa-twitter"></i></a>
+                <a href="#" class="social-btn"><i class="fa fa-linkedin"></i></a>
+                <a href="#" class="social-btn"><i class="fa fa-instagram"></i></a>
+              </div>
+              <div class="mt-4 pt-4 border-top border-white border-opacity-10 text-white-50 small">
+                © <%= Date.today.year %> Shopping Mart. All Rights Reserved.
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-
-
-    <div class="container">
-      <center>
-        <h4>Connect with us:</h4>
-        <a href="#" class="fa fa-facebook"></a>
-        <a href="#" class="fa fa-twitter"></a>
-        <a href="#" class="fa fa-google"></a>
-        <a href="#" class="fa fa-linkedin"></a>
-        <a href="#" class="fa fa-instagram"></a>
-      </center>
-    </div>
-    
-    <br>
-
-    <div class="container">
-      <center>
-        © 2022 littlestars.com All Rights Reserved. Powered By 
-        <a href="#" target="_blank"> Shriffle IT Solutions.com.</a>
-      </center>
-    </div>
-
-    <br>
-
-    <div>
-      <button class="btn btn-outline-success">
-        <%= link_to 'Back', root_path%>
-      </button>
+      
+      <div class="text-center mt-4">
+        <%= link_to root_path, class: "btn btn-link text-muted text-decoration-none small" do %>
+          <i class="fa fa-arrow-left me-1"></i> Back to Homepage
+        <% end %>
+      </div>
     </div>
   </div>
-</body>
+</div>
 
-
-
-
+<style>
+  .tracking-wider { letter-spacing: 0.1em; }
+  .social-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: rgba(255,255,255,0.1);
+    color: white;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    text-decoration: none;
+  }
+  .social-btn:hover {
+    background: var(--primary-color);
+    transform: translateY(-3px);
+    color: white;
+  }
+  .hover-lift:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.1) !important;
+  }
+  .form-control:focus {
+    background-color: #fff !important;
+    box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.1);
+    border: none;
+  }
+</style>

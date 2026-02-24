@@ -1,32 +1,75 @@
-<div class="container" style="padding: 100px; background-color: #e8c06f; border-radius: 15px;">
-  
-  <center>
-    <h2>Log in</h2>
-
-    <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-      <div class="field">
-        <%= f.label :email %><br />
-        <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-      </div>
-
-      <div class="field">
-        <%= f.label :password %><br />
-        <%= f.password_field :password, autocomplete: "current-password" %>
-      </div>
-
-      <% if devise_mapping.rememberable? %>
-        <div class="field">
-          <%= f.check_box :remember_me %>
-          <%= f.label :remember_me %>
+<div class="container d-flex align-items-center justify-content-center" style="min-height: 80vh;">
+  <div class="card border-0 shadow-lg overflow-hidden" style="max-width: 500px; width: 100%; border-radius: 20px;">
+    <div class="row g-0">
+      <div class="col-12 p-5 bg-white">
+        <div class="text-center mb-5">
+          <div class="d-inline-block bg-primary bg-opacity-10 p-3 rounded-circle mb-3">
+            <i class="fa fa-user-circle fa-3x text-primary"></i>
+          </div>
+          <h2 class="fw-bold text-dark">Welcome Back</h2>
+          <p class="text-muted">Log in to your account to continue</p>
         </div>
-      <% end %>
 
-      <div class="actions">
-        <%= f.submit "Log in" %>
+        <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { data: { turbo: false }, class: "needs-validation" }) do |f| %>
+          <div class="mb-4">
+            <%= f.label :email, class: "form-label fw-bold small text-uppercase tracking-wider" %>
+            <div class="input-group">
+              <span class="input-group-text bg-light border-end-0 rounded-start-pill px-3">
+                <i class="fa fa-envelope text-muted"></i>
+              </span>
+              <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control bg-light border-start-0 rounded-end-pill px-3 py-2", placeholder: "your@email.com" %>
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <%= f.label :password, class: "form-label fw-bold small text-uppercase tracking-wider mb-0" %>
+              <%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
+                <%= link_to "Forgot?", new_password_path(resource_name), class: "small text-primary text-decoration-none" %>
+              <% end %>
+            </div>
+            <div class="input-group">
+              <span class="input-group-text bg-light border-end-0 rounded-start-pill px-3">
+                <i class="fa fa-lock text-muted"></i>
+              </span>
+              <%= f.password_field :password, autocomplete: "current-password", class: "form-control bg-light border-start-0 rounded-end-pill px-3 py-2", placeholder: "••••••••" %>
+            </div>
+          </div>
+
+          <% if devise_mapping.rememberable? %>
+            <div class="mb-4 form-check ps-0 d-flex align-items-center">
+              <%= f.check_box :remember_me, class: "form-check-input ms-0 me-2", style: "width: 1.2rem; height: 1.2rem;" %>
+              <%= f.label :remember_me, class: "form-check-label text-muted" %>
+            </div>
+          <% end %>
+
+          <div class="d-grid mb-4">
+            <%= f.submit "SIGN IN", class: "btn btn-primary rounded-pill fw-bold py-2 shadow-sm" %>
+          </div>
+        <% end %>
+
+        <div class="text-center mt-4">
+          <p class="text-muted small mb-0">Don't have an account?</p>
+          <%= link_to "Sign up now", new_registration_path(resource_name), class: "fw-bold text-primary text-decoration-none" %>
+        </div>
+
+        <div class="mt-4 pt-4 border-top text-center">
+          <%= link_to root_path, class: "text-muted small text-decoration-none" do %>
+            <i class="fa fa-arrow-left me-1"></i> Back to Homepage
+          <% end %>
+        </div>
       </div>
-    <% end %>
-
-    <%= render "devise/shared/links" %>
-
-  </center>
+    </div>
+  </div>
 </div>
+
+<style>
+  .tracking-wider { letter-spacing: 0.05em; }
+  .form-control:focus {
+    box-shadow: none;
+    border-color: #dee2e6;
+  }
+  .input-group-text {
+    border-color: #dee2e6;
+  }
+</style>

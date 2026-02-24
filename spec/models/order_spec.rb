@@ -7,13 +7,13 @@ RSpec.describe Order, type: :model do
     it { should belong_to(:user).class_name('User') }
     it { should have_many(:order_items).class_name('OrderItem').dependent(:destroy) }
     it { should have_many(:products).through(:order_items).class_name('Product') }
-    it { should have_one(:delivery_detail).class_name('DeliveryDetail').dependent(:destroy) }
+    it { should belong_to(:delivery_detail).class_name('DeliveryDetail').optional }
   end
 
   describe 'enums' do
     it {
-      should define_enum_for(:status).with_values(created: 'created', placed: 'placed', confirmed: 'confirmed',
-                                                  shipped: 'shipped', delivered: 'delivered')
+      should define_enum_for(:status).with_values(draft: 'draft', placed: 'placed', confirmed: 'confirmed',
+                                                  shipped: 'shipped', delivered: 'delivered', cancelled: 'cancelled')
                                      .backed_by_column_of_type(:string)
     }
   end
@@ -21,7 +21,7 @@ RSpec.describe Order, type: :model do
   describe 'callbacks' do
     it 'sets default status to created' do
       order = Order.new
-      expect(order.status).to eq('created')
+      expect(order.status).to eq('draft')
     end
   end
 

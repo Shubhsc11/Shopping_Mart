@@ -1,29 +1,92 @@
-<body>
-	<h1>Offers =></h1>
-
-	<div class="container" style="padding: 50px; background-color: #e8c06f; border-radius: 15px;">
-		<div class="row">
-			<div class="col-sm-4">
-				<h2 style="text-decoration-line: underline;">Offer. 1. </h2>
-				<p style="font-family: cursive; font-size: 25pt;">Offer's Coming Soon*</p>
-			</div>
-
-			<div class="col-sm-4">
-				<h2 style="text-decoration-line: underline;">Offer. 2. </h2>
-				<p style="font-family: cursive; font-size: 25pt;">Offer's Coming Soon*</p>
-			</div>			
-		</div>
-
-		<br>
-
-		<div>
-      <button class="btn btn-outline-success">
-        <%= link_to 'Back', root_path%>
-      </button>
+<div class="container py-5">
+  <div class="d-flex justify-content-between align-items-center mb-5">
+    <div>
+      <h1 class="h2 fw-bold text-dark mb-1">Exclusive Offers</h1>
+      <p class="text-muted mb-0">Grab the best deals before they're gone!</p>
     </div>
-    
-	</div> 
-</body>
+    <%= link_to root_path, class: "btn btn-outline-secondary rounded-pill px-4 shadow-sm" do %>
+      <i class="fa fa-arrow-left me-2"></i> Back to Shopping
+    <% end %>
+  </div>
 
+  <div class="row g-4">
+    <!-- Grocery Offer Card -->
+    <div class="col-md-6 col-lg-4">
+      <div class="card border-0 shadow-lg h-100 overflow-hidden text-white" style="background: linear-gradient(135deg, #27ae60, #2ecc71); border-radius: 20px;">
+        <div class="card-body p-4 d-flex flex-column">
+          <div class="d-flex justify-content-between align-items-start mb-4">
+            <div class="bg-white bg-opacity-25 rounded-circle p-3">
+              <i class="fa fa-shopping-basket fa-2x"></i>
+            </div>
+            <span class="badge bg-warning text-dark fw-bold px-3 py-2 rounded-pill">BEST VALUE</span>
+          </div>
+          <h3 class="fw-bold mb-2">Groceries</h3>
+          <h1 class="display-4 fw-black mb-3">60% <small class="h3">OFF</small></h1>
+          <p class="mb-4 text-white-50">Save big on your daily essentials. Fresh fruits, vegetables, and more at unbeatable prices.</p>
+          <div class="mt-auto">
+            <%= link_to "SHOP GROCERY", root_path, class: "btn btn-light w-100 rounded-pill fw-bold py-2 shadow" %>
+          </div>
+        </div>
+      </div>
+    </div>
 
+    <!-- Electronics Offer Card -->
+    <div class="col-md-6 col-lg-4">
+      <div class="card border-0 shadow-lg h-100 overflow-hidden text-white" style="background: linear-gradient(135deg, #2980b9, #3498db); border-radius: 20px;">
+        <div class="card-body p-4 d-flex flex-column">
+          <div class="d-flex justify-content-between align-items-start mb-4">
+            <div class="bg-white bg-opacity-25 rounded-circle p-3">
+              <i class="fa fa-plug fa-2x"></i>
+            </div>
+            <span class="badge bg-danger text-white fw-bold px-3 py-2 rounded-pill">TECH DEALS</span>
+          </div>
+          <h3 class="fw-bold mb-2">Electronics</h3>
+          <h1 class="display-4 fw-black mb-3">70% <small class="h3">OFF</small></h1>
+          <p class="mb-4 text-white-50">Upgrade your lifestyle with the latest gadgets. Limited time offer on selected tech items.</p>
+          <div class="mt-auto">
+            <%= link_to "EXPLORE TECH", root_path, class: "btn btn-light w-100 rounded-pill fw-bold py-2 shadow" %>
+          </div>
+        </div>
+      </div>
+    </div>
 
+    <!-- Fashion Offer Card (Added for symmetry) -->
+    <div class="col-md-6 col-lg-4">
+      <div class="card border-0 shadow-lg h-100 overflow-hidden text-white" style="background: linear-gradient(135deg, #e67e22, #f39c12); border-radius: 20px;">
+        <div class="card-body p-4 d-flex flex-column">
+          <div class="d-flex justify-content-between align-items-start mb-4">
+            <div class="bg-white bg-opacity-25 rounded-circle p-3">
+              <i class="fa fa-tag fa-2x"></i>
+            </div>
+            <span class="badge bg-light text-dark fw-bold px-3 py-2 rounded-pill">TRENDING</span>
+          </div>
+          <h3 class="fw-bold mb-2">Fashion</h3>
+          <h1 class="display-4 fw-black mb-3">50% <small class="h3">OFF</small></h1>
+          <p class="mb-4 text-white-50">Refresh your wardrobe with the latest styles. Huge discounts on premium clothing brands.</p>
+          <div class="mt-auto">
+            <%= link_to "VIEW FASHION", root_path, class: "btn btn-light w-100 rounded-pill fw-bold py-2 shadow" %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Promotional Banner Section -->
+  <div class="mt-5 text-center p-5 bg-white rounded-3 shadow-sm border">
+    <h4 class="fw-bold mb-3">Haven't found what you're looking for?</h4>
+    <p class="text-muted mb-4">Our team is constantly negotiating new deals for you. Subscribe to our newsletter to stay updated!</p>
+    <div class="d-flex justify-content-center">
+      <div class="input-group" style="max-width: 400px;">
+        <input type="text" class="form-control rounded-start-pill border-end-0 px-4" placeholder="Enter your email">
+        <button class="btn btn-primary rounded-end-pill px-4" type="button">Subscribe</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .fw-black { font-weight: 900; }
+  .display-4 { letter-spacing: -2px; }
+  .card { transition: transform 0.3s ease; }
+  .card:hover { transform: translateY(-10px); }
+</style>

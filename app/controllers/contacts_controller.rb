@@ -3,6 +3,7 @@
 class ContactsController < ApplicationController
   def index
     @contacts = Contact.order(created_at: :asc)
+    @contact = Contact.new
   end
 
   def show

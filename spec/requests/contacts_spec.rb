@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe 'Contacts', type: :request do
-  let(:contact) { create(:contact) }
+  let!(:contact) { create(:contact) }
 
   describe 'GET /index' do
     it 'returns http success' do

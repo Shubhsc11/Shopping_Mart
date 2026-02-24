@@ -1,1 +1,117 @@
-<h2>Order show</h2>
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <h1 class="h2 fw-bold text-dark mb-0">Order #<%= @order.id %></h1>
+    <p class="text-muted mb-0">Placed on <%= @order.created_at.strftime("%B %d, %Y at %I:%M %p") %></p>
+  </div>
+  <div class="d-flex gap-2">
+    <% status_class = case @order.status
+       when 'draft' then 'bg-warning text-dark'
+       when 'placed' then 'bg-info text-white'
+       when 'confirmed' then 'bg-primary text-white'
+       when 'shipped' then 'bg-secondary text-white'
+       when 'delivered' then 'bg-success text-white'
+       else 'bg-light text-dark'
+       end %>
+    <span class="badge <%= status_class %> rounded-pill text-uppercase px-4 py-2" style="font-size: 0.9rem;">
+      <%= @order.status %>
+    </span>
+    <%= link_to orders_path, class: "btn btn-outline-secondary rounded-pill" do %>
+      <i class="fa fa-list-ul me-1"></i> All Orders
+    <% end %>
+  </div>
+</div>
+
+<div class="row g-4">
+  <div class="col-lg-8">
+    <div class="card shadow-sm border-0 rounded-3 mb-4">
+      <div class="card-header bg-white py-3 border-bottom">
+        <h5 class="mb-0 fw-bold"><i class="fa fa-shopping-cart me-2 text-success"></i> Order Items</h5>
+      </div>
+      <div class="table-responsive">
+        <table class="table align-middle mb-0">
+          <thead class="bg-light">
+            <tr>
+              <th class="ps-4">Product</th>
+              <th class="text-center">Price</th>
+              <th class="text-center">Quantity</th>
+              <th class="text-end pe-4">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% 
+              items = if current_user.owner?
+                        @order.order_items.joins(:product).where(products: { user_id: current_user.id })
+                      else
+                        @order.order_items
+                      end
+              total_displayed = 0
+            %>
+            <% items.each do |item| %>
+              <% total_displayed += item.total_price %>
+              <tr>
+                <td class="ps-4 py-3">
+                  <div class="d-flex align-items-center">
+                    <div>
+                      <h6 class="mb-0 fw-bold text-dark text-truncate" style="max-width: 250px;"><%= item.item_name %></h6>
+                      <small class="text-muted">Product ID: #<%= item.product_id %></small>
+                    </div>
+                  </div>
+                </td>
+                <td class="text-center">$<%= item.item_price / item.item_qty rescue 0 %></td>
+                <td class="text-center"><%= item.item_qty %></td>
+                <td class="text-end pe-4 fw-bold text-dark">$<%= item.total_price %></td>
+              </tr>
+            <% end %>
+          </tbody>
+          <tfoot class="bg-light">
+            <tr>
+              <td colspan="3" class="text-end fw-bold py-3"><%= current_user.owner? ? 'Your Items Total:' : 'Subtotal:' %></td>
+              <td class="text-end pe-4 fw-bold py-3" style="font-size: 1.1rem;">$<%= total_displayed %></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-4">
+    <div class="card shadow-sm border-0 rounded-3 mb-4">
+      <div class="card-header bg-white py-3 border-bottom">
+        <h5 class="mb-0 fw-bold"><i class="fa fa-user me-2 text-success"></i> Customer Info</h5>
+      </div>
+      <div class="card-body">
+        <p class="mb-2"><strong>Email:</strong> <%= @order.user.email %></p>
+        <p class="mb-2"><strong>Role:</strong> <%= @order.user.roles.humanize %></p>
+        <hr>
+        <p class="mb-0 text-success fw-bold">
+          <i class="fa fa-money me-1"></i> Available Points: $<%= @available_points %>
+        </p>
+      </div>
+    </div>
+
+    <% if @order.delivery_detail %>
+      <div class="card shadow-sm border-0 rounded-3 mb-4">
+        <div class="card-header bg-white py-3 border-bottom">
+          <h5 class="mb-0 fw-bold"><i class="fa fa-truck me-2 text-success"></i> Delivery Details</h5>
+        </div>
+        <div class="card-body">
+          <p class="mb-1"><strong>Name:</strong> <%= @order.delivery_detail.full_name %></p>
+          <p class="mb-1"><strong>Address:</strong> <%= @order.delivery_detail.address %></p>
+          <p class="mb-1"><strong>Contact:</strong> <%= @order.delivery_detail.contact_no %></p>
+        </div>
+      </div>
+    <% end %>
+
+    <div class="d-grid gap-2">
+      <% if !current_user.owner? && (@order.draft? || @order.placed? || @order.confirmed?) %>
+        <%= button_to order_path(@order), method: :delete, data: { confirm: 'Are you sure you want to cancel this order?' }, class: "btn btn-outline-danger rounded-pill py-2 shadow-sm mb-2 w-100" do %>
+          <i class="fa fa-times me-2"></i> Cancel Order
+        <% end %>
+      <% end %>
+      
+      <%= link_to root_path, class: "btn btn-success rounded-pill py-2 shadow-sm" do %>
+        <i class="fa fa-shopping-basket me-2"></i> Continue Shopping
+      <% end %>
+    </div>
+  </div>
+</div>

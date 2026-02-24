@@ -1,0 +1,106 @@
+<head>
+  <style type="text/css">
+
+    table, th, td {
+      border-collapse: collapse;
+      font-size: 15pt;
+      padding: 5px;
+      text-align: center;
+    }
+
+    th {
+      border: 2px solid black;
+      background-color: #96D4D4;
+    }
+    td{
+      border: 2px groove; black;
+    }
+  </style>
+</head>
+
+<body>
+  <div>
+    <% if @cart.present? && @cart.total_price > 0 %>
+      <div class="container">
+        <center>
+          <h2 style="background-color: #e8c06f; border-radius: 15px; padding: 15px;">Your Cart Items Details</h2>
+            <br>
+          <table>
+            <tr>
+              <th>Item Name</th>
+              <th>Item Price</th>
+              <th>Item Quantity</th>
+              <th>Total Price</th>
+              <th>Action</th>
+            </tr>
+
+            <% @cart_items.each do |cart_item| %>
+              <tr>
+                <td><%= cart_item.product.p_name %></td>
+                <td><%= cart_item.product.p_price %></td>
+                <td><%= cart_item.item_qty %></td>
+                <td><%= cart_item.total_price %></td>
+                <td>
+                  <h6 style="display: flex; flex-direction: row; align-items: center; gap: 5px; justify-content: center; font-size: 15px;">
+                    <% if @cart.total_price < current_user.points %>
+                      <%= button_to "➕", cart_item_add_path(cart_item), method: :post %>
+                    <% end %>
+                    <% if cart_item.item_qty > 1 %>
+                      <%= button_to "➖", cart_item_reduce_path(cart_item), method: :post %>
+                    <% end %>
+                    <%= button_to "❌", cart_item_path(cart_item), method: :delete %>
+                  </h6>
+                </td>
+              </tr>
+            <% end %>
+          </table>
+        </center>
+      </div>
+      <br>
+
+      <div class="container" style="background-color: #e8c06f; border-radius: 10px; padding: 15px;">
+        <div class="row">
+          <div class="col-sm-4" style="text-align: center;">
+            <h4>Total Amount : <%= @cart.total_price %></h4>
+            <h4>** Points **</h4>
+            <h5>*In Wallet*: <%= current_user.points %></h5>
+            <h5>*Remaining*: <%= current_user.points - @cart.total_price %></h5>
+          </div>
+
+          <div class="col-sm-4" style="text-align: center; ">
+            <% if @cart.total_price > current_user.points %>
+              <h4>*** Insufficient Points ***</h4>
+              <h5>Add Points
+                <%= button_to "+", user_add_points_path(current_user), method: :post %>
+              </h5>
+            <% end %>
+          </div>
+
+          <div class="col-sm-4" style="text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+            <% if @cart.total_price <= current_user.points %>
+              <h4>
+                <%= link_to 'Book Order', delivery_details_path, class: "btn btn-outline-success" %>
+              </h4>
+            <% end %>
+            <h4>
+              <%= button_to 'Clear Cart', cart_path(@cart), method: :delete, class: "btn btn-outline-danger" %>
+            </h4>
+            <h4>
+              <%= link_to 'Continue Shopping', root_path, method: :get, class: "btn btn-outline-info" %>
+            </h4>
+          </div>
+
+        </div>
+      </div>
+
+    <% else %>
+      <center>
+        <h3 style="background-color: #e8c06f; border-radius: 15px; padding: 15px;">Your Cart is Empty!!!</h3>
+      </center>
+      <br>
+      <h4 class="btn btn-outline-success"><%= link_to "Continue Shopping", root_path %></h4>
+      <br>
+    <% end %>
+  </div>       
+
+</body>

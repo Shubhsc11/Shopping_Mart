@@ -1,0 +1,77 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-success shadow-sm">
+  <div class="container">
+    <%= link_to 'Shopping Mart', root_path, class: 'navbar-brand fw-bold text-uppercase' %>
+    
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="mainNavbar">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <%= link_to 'Home', products_path, class: "nav-link #{'active' if current_page?(products_path)}" %>
+        </li>
+        <li class="nav-item">
+          <%= link_to 'Offers', offers_path, class: "nav-link #{'active' if current_page?(offers_path)}" %>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="categoriesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Categories
+          </a>
+          <ul class="dropdown-menu shadow border-0" aria-labelledby="categoriesDropdown">
+            <% Category.all.each do |category| %>
+              <li><%= link_to category.category_name, category, class: 'dropdown-item' %></li>
+            <% end %>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item disabled" href="#">Coming Soon More*</a></li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <%= link_to 'About Us', about_us_path, class: "nav-link #{'active' if current_page?(about_us_path)}" %>
+        </li>
+        <li class="nav-item">
+          <%= link_to 'Contact Us', new_contact_path, class: "nav-link #{'active' if current_page?(new_contact_path)}" %>
+        </li>
+      </ul>
+
+      <ul class="navbar-nav ms-auto align-items-center">
+        <% if user_signed_in? %>
+          <li class="nav-item me-3">
+            <% if current_user.customer? %>
+              <span class="nav-link text-white bg-dark bg-opacity-25 rounded-pill px-3 py-1">
+                <i class="fa fa-money me-1"></i> Points: <span class="fw-bold">$<%= current_user.points %></span>
+              </span>
+            <% end%>
+          </li>
+          
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle btn btn-light text-dark px-3 rounded-pill border-0" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="fa fa-user-circle me-1"></i> <%= current_user.email.split('@').first.humanize %>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end shadow border-0" aria-labelledby="userDropdown">
+              <li><h6 class="dropdown-header"><%= current_user.roles.humanize %></h6></li>
+              <li><%= link_to edit_user_registration_path, class: 'dropdown-item' do %>
+                <i class="fa fa-user me-2"></i> Edit Profile
+              <% end %></li>
+              <li><%= link_to orders_path, class: 'dropdown-item' do %>
+                <i class="fa <%= current_user.owner? ? 'fa-list-alt' : 'fa-shopping-bag' %> me-2"></i> 
+                <%= current_user.owner? ? 'Customer Orders' : 'My Orders' %>
+              <% end %></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><%= link_to destroy_user_session_path, class: 'dropdown-item text-danger', data: { turbo_method: :delete } do %>
+                <i class="fa fa-sign-out me-2 text-danger"></i> Logout
+              <% end %></li>
+            </ul>
+          </li>
+        <% else %>
+          <li class="nav-item">
+            <%= link_to 'Login', new_user_session_path, class: 'nav-link' %>
+          </li>
+          <li class="nav-item ms-lg-2">
+            <%= link_to 'Sign Up', new_user_registration_path, class: 'btn btn-outline-light rounded-pill px-4' %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</nav>

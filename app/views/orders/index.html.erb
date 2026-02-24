@@ -1,6 +1,76 @@
-<h1>Order Index</h1>
+<div class="mb-4 d-flex justify-content-between align-items-center">
+  <h1 class="h2 fw-bold text-dark mb-0"><%= current_user.owner? ? 'Customer Orders' : 'My Orders' %></h1>
+  <%= link_to root_path, class: "btn btn-outline-secondary rounded-pill" do %>
+    <i class="fa <%= current_user.owner? ? 'fa-home' : 'fa-arrow-left' %> me-1"></i> Back to <%= current_user.owner? ? 'Home' : 'Products' %>
+  <% end %>
+</div>
 
-<%= @order.each do |order|%>
-	<%= order.id %>
-	<%= order.status %>
+<% if @orders.any? %>
+  <div class="card shadow-sm border-0 rounded-3">
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0">
+        <thead class="bg-light">
+          <tr>
+            <th class="ps-4">Order ID</th>
+            <th>Date</th>
+            <th>Status</th>
+            <% if current_user.owner? %>
+              <th>Customer Email</th>
+            <% end %>
+            <th>Items</th>
+            <th>Total</th>
+            <th class="">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @orders.each do |order| %>
+            <tr>
+              <td class="ps-4 fw-bold text-primary">#<%= order.id %></td>
+              <td><%= order.created_at.strftime("%b %d, %Y") %></td>
+              <td>
+                <% status_class = case order.status
+                   when 'draft' then 'bg-secondary text-white'
+                   when 'placed' then 'bg-info text-white'
+                   when 'confirmed' then 'bg-primary text-white'
+                   when 'shipped' then 'bg-warning text-dark'
+                   when 'delivered' then 'bg-success text-white'
+                   when 'cancelled' then 'bg-danger text-white'
+                   else 'bg-light text-dark'
+                   end %>
+                <span class="badge <%= status_class %> rounded-pill text-uppercase px-3" style="font-size: 0.75rem;">
+                  <%= order.status %>
+                </span>
+              </td>
+              <% if current_user.owner? %>
+                <td><%= order.user.email %></td>
+              <% end %>
+              <td><%= order.order_items.sum(:item_qty) %> items</td>
+              <td class="fw-bold">$<%= order.sub_total %></td>
+              <td class="">
+                <%= link_to order_path(order), class: "btn btn-sm btn-outline-success rounded-pill px-3" do %>
+                  <i class="fa fa-eye me-1"></i> View
+                <% end %>
+                <% if !current_user.owner? && order.draft? %>
+                  <%= button_to order_path(order), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-sm btn-outline-danger rounded-pill px-3 ms-1" do %>
+                    <i class="fa fa-trash"></i>
+                  <% end %>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+<% else %>
+  <div class="text-center py-5 bg-white rounded-3 shadow-sm">
+    <i class="fa fa-shopping-basket fa-4x text-muted mb-3"></i>
+    <h3 class="text-muted">No orders yet</h3>
+    <% if current_user.owner? %>
+      <p>Start selling your products and earn points from your customers.</p>
+    <% else %>
+      <p>Your order history will appear here once you place an order.</p>
+      <%= link_to "Start Shopping", root_path, class: "btn btn-success rounded-pill px-4 mt-2" %>
+    <% end %>
+  </div>
 <% end %>
