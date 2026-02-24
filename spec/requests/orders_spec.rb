@@ -39,7 +39,7 @@ RSpec.describe 'Orders', type: :request do
     it 'redirects if order not found' do
       get '/orders/999'
       expect(response).to redirect_to(orders_path)
-      expect(flash[:alert]).to eq('Order not found')
+      expect(flash[:alert]).to eq(I18n.t('messages.order.not_found'))
     end
 
     context 'when owner' do
@@ -77,7 +77,7 @@ RSpec.describe 'Orders', type: :request do
     it 'deletes a draft order' do
       delete "/orders/#{order.id}"
       expect(response).to redirect_to(orders_path)
-      expect(flash[:notice]).to eq('Order was successfully cancelled.')
+      expect(flash[:notice]).to eq(I18n.t('messages.order.cancel_success'))
     end
 
     it 'cancels a placed order and refunds points' do
@@ -94,12 +94,18 @@ RSpec.describe 'Orders', type: :request do
     it 'cannot cancel a shipped order' do
       order.update(status: 'shipped')
       delete "/orders/#{order.id}"
-      expect(flash[:alert]).to include('Cannot cancel order')
+      expect(flash[:alert]).to eq(I18n.t('messages.order.cancel_failure'))
+    end
+
+    it 'redirects if order not found' do
+      delete '/orders/0'
+      expect(response).to redirect_to(orders_path)
+      expect(flash[:alert]).to eq(I18n.t('messages.order.not_found'))
     end
 
     it 'order not found or unauthorized' do
       delete '/orders/0'
-      expect(flash[:alert]).to eq('Order not found')
+      expect(flash[:alert]).to eq(I18n.t('messages.order.not_found'))
     end
   end
 
