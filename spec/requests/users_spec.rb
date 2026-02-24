@@ -17,7 +17,8 @@ RSpec.describe 'Users', type: :request do
           post user_add_points_path(user)
           user.reload
         end.to change(user, :points).by(100)
-        expect(response).to redirect_to(order_items_path)
+        expect(response).to redirect_to(my_cart_path)
+        expect(flash[:notice]).to eq('Points added successfully.')
       end
     end
 

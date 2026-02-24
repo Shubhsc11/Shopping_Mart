@@ -2,22 +2,22 @@
 
 class OrdersController < ApplicationController
   def index
-    if current_user.owner?
-      @orders = Order.joins(:products).where(products: { user_id: current_user.id }).distinct.order(created_at: :desc)
-    else
-      @orders = current_user.orders.order(created_at: :desc)
-    end
+    @orders = if current_user.owner?
+                Order.joins(:products).where(products: { user_id: current_user.id }).distinct.order(created_at: :desc)
+              else
+                current_user.orders.order(created_at: :desc)
+              end
   end
 
   def show
-    if current_user.owner?
-      @order = Order.joins(:products).where(products: { user_id: current_user.id }, id: params[:id]).distinct.first
-    else
-      @order = current_user.orders.find_by(id: params[:id])
-    end
+    @order = if current_user.owner?
+               Order.joins(:products).where(products: { user_id: current_user.id }, id: params[:id]).distinct.first
+             else
+               current_user.orders.find_by(id: params[:id])
+             end
 
     if @order.nil?
-      redirect_to orders_path, alert: "Order not found."
+      redirect_to orders_path, alert: t('messages.order.not_found')
       return
     end
     @available_points = current_user.points
@@ -49,42 +49,6 @@ class OrdersController < ApplicationController
     end
   end
 
-  def destroy
-    @order = current_user.orders.find_by(id: params[:id])
-    
-    if @order.nil?
-      redirect_to orders_path, alert: "Order not found or you don't have permission to cancel it."
-      return
-    end
-
-    if @order.shipped? || @order.delivered?
-      redirect_to orders_path, alert: "Cannot cancel order that has already been #{@order.status}."
-      return
-    end
-
-    # Handle refunds and quantity restoration for placed/confirmed orders
-    if @order.placed? || @order.confirmed?
-      ActiveRecord::Base.transaction do
-        # Refund points
-        @order.user.update!(points: @order.user.points + @order.sub_total)
-        
-        # Restore quantities
-        @order.order_items.each do |item|
-          item.product.update!(p_qty: item.product.p_qty + item.item_qty)
-        end
-        
-        @order.update(status: 'cancelled')
-      end
-      redirect_to orders_path, notice: "Order cancelled. Points refunded and inventory restored."
-    else
-      # Draft orders can just be deleted
-      @order.destroy
-      redirect_to orders_path, notice: "Order deleted."
-    end
-  rescue ActiveRecord::RecordInvalid => e
-    redirect_to orders_path, alert: "Failed to cancel order: #{e.message}"
-  end
-
   def update
     @order = current_user.orders.find(params[:id])
     if @order.update(status: 'placed', delivery_detail_id: params[:delivery_detail_id])
@@ -92,7 +56,7 @@ class OrdersController < ApplicationController
         current_user.update(points: current_user.points - @order.sub_total)
       rescue ActiveRecord::RecordInvalid => e
         @order.update(status: 'draft')
-        redirect_to order_path(@order), alert: "Failed to place order: #{e.message}"
+        redirect_to order_path(@order), alert: t('messages.order.place_failure') + ": #{e.message}"
         return
       end
 
@@ -102,10 +66,25 @@ class OrdersController < ApplicationController
       end
       # Clear cart only after successful placement
       current_user.cart&.cart_items&.destroy_all
-      redirect_to order_path(@order), notice: "Order placed successfully!"
+      redirect_to order_path(@order), notice: t('messages.order.place_success')
     else
-      redirect_to root_path, alert: 'Failed to place order.'
+      redirect_to root_path, alert: t('messages.order.place_failure')
     end
+  end
+
+  def destroy
+    @order = current_user.orders.find_by(id: params[:id])
+
+    if @order.nil?
+      redirect_to orders_path, alert: t('messages.order.not_found')
+    elsif @order.refundable?
+      redirect_to orders_path, alert: t('messages.order.cancel_failure')
+    else
+      @order.placed? || @order.confirmed? ? @order.cancel! : @order.destroy
+      redirect_to orders_path, notice: t('messages.order.cancel_success')
+    end
+  rescue ActiveRecord::RecordInvalid => e
+    redirect_to orders_path, alert: "#{t('messages.order.cancel_failure')}: #{e.message}"
   end
 
   private

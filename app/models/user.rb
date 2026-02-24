@@ -25,17 +25,17 @@ class User < ApplicationRecord
   end
 
   def set_default_role
-    update(roles: 'customer') unless roles.present?
+    update(roles: 'customer') if roles.blank?
   end
 
   def add_cart
-    Cart.create(user_id: self.id)
+    Cart.create(user_id: id)
   end
 
   def check_credit_points
     return unless customer?
 
-    if self.points < 0
+    if points.negative?
       errors.add(:points, "You don't have enough credit points to place this order.")
     else
       yield

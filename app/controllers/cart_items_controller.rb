@@ -1,6 +1,14 @@
 # frozen_string_literal: true
 
 class CartItemsController < ApplicationController
+  def index
+    redirect_to my_cart_path
+  end
+
+  def show
+    redirect_to my_cart_path
+  end
+
   def create
     product = Product.find_by(id: params[:product_id])
     cart_item = CartItem.find_by(cart_id: current_user.cart.id, product_id: product.id)
@@ -19,14 +27,6 @@ class CartItemsController < ApplicationController
 
     path = params[:action_key] == 'buy' ? my_cart_path : products_path
     redirect_to path
-  end
-
-  def index
-    redirect_to my_cart_path
-  end
-
-  def show
-    redirect_to my_cart_path
   end
 
   def add_quantity

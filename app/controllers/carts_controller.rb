@@ -11,7 +11,10 @@ class CartsController < ApplicationController
     product_ids = cart.cart_items.pluck(:product_id)
 
     if product_ids.any?
-      current_user.orders.where(status: 'draft').joins(:order_items).where(order_items: { product_id: product_ids }).distinct.destroy_all
+      current_user.orders.where(status: 'draft')
+                  .joins(:order_items)
+                  .where(order_items: { product_id: product_ids })
+                  .distinct.destroy_all
     end
 
     cart.cart_items.destroy_all

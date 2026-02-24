@@ -31,3 +31,20 @@
 
 en:
   hello: "Hello world"
+
+  messages:
+    delivery_address:
+      limit_reached: 'You can only have up to 5 delivery addresses.'
+      created: 'Delivery address was successfully created.'
+      updated: 'Delivery address was successfully updated.'
+      deleted: 'Delivery address was successfully deleted.'
+
+    order:
+      place_success: 'Order placed successfully!!!'
+      place_failure: 'Failed to place order. Please try again.'
+      cancel_success: 'Order was successfully cancelled.'
+      cancel_failure: 'Cannot cancel order. It may have already been cancelled or is not eligible for cancellation.'
+      not_found: 'Order not found'
+
+    users:
+      points_added: 'Points added successfully.'

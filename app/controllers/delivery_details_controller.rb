@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class DeliveryDetailsController < ApplicationController
-  # before_action :find_current_order, only: %i[index new create edit update show]
   before_action :initiate_order, only: :index
 
   def index
@@ -24,22 +23,22 @@ class DeliveryDetailsController < ApplicationController
 
   def create
     if current_user.delivery_details.count >= 5
-      flash[:alert] = "You can only have up to 5 delivery addresses."
+      flash[:alert] = t('errors.delivery_details.limit_reached')
       redirect_to delivery_details_path and return
     end
 
     @delivery_detail = current_user.delivery_details.create(delivery_detail_params)
     if @delivery_detail.save
-      redirect_to delivery_details_path
+      redirect_to delivery_details_path, notice: t('messages.delivery_address.created')
     else
-      redirect_to new_delivery_detail_path
+      redirect_to new_delivery_detail_path, status: :unprocessable_entity
     end
   end
 
   def update
     @delivery_detail = DeliveryDetail.find(params[:id])
     if @delivery_detail.update(update_delivery_detail_params)
-      redirect_to delivery_details_path
+      redirect_to delivery_details_path, notice: t('messages.delivery_address.updated')
     else
       render :edit, status: :unprocessable_entity
     end
@@ -48,7 +47,7 @@ class DeliveryDetailsController < ApplicationController
   def destroy
     @delivery_detail = DeliveryDetail.find(params[:id])
     @delivery_detail.destroy
-    redirect_to delivery_details_path, status: :see_other
+    redirect_to delivery_details_path, notice: t('messages.delivery_address.deleted'), status: :see_other
   end
 
   private
@@ -62,7 +61,10 @@ class DeliveryDetailsController < ApplicationController
       if order_item.present?
         order_item.update(item_qty: cart_item.item_qty, item_price: cart_item.item_qty * product.p_price)
       else
-        @current_order.order_items.create(product_id: cart_item.product_id, item_name: product.p_name, item_qty: cart_item.item_qty, item_price: cart_item.item_qty * product.p_price)
+        @current_order.order_items.create(
+          product_id: cart_item.product_id, item_name: product.p_name,
+          item_qty: cart_item.item_qty, item_price: cart_item.item_qty * product.p_price
+        )
       end
     end
     @available_points = current_user.points - @current_order.sub_total
@@ -74,10 +76,5 @@ class DeliveryDetailsController < ApplicationController
 
   def delivery_detail_params
     params.require(:delivery_detail).permit(:full_name, :address, :contact_no, :user_id)
-  end
-
-  def find_current_order
-    @current_order = current_user.orders.last
-    @current_order.status = 'confirmed'
   end
 end

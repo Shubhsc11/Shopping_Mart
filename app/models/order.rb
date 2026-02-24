@@ -16,10 +16,20 @@ class Order < ApplicationRecord
   end
 
   def sub_total
-    sum = 0
-    order_items.each do |order_item|
-      sum += order_item.total_price
+    order_items.sum(&:total_price)
+  end
+
+  def refundable?
+    shipped? || delivered?
+  end
+
+  def cancel!
+    ActiveRecord::Base.transaction do
+      user.update!(points: user.points + sub_total)
+      order_items.each do |item|
+        item.product.update!(p_qty: item.product.p_qty + item.item_qty)
+      end
+      update!(status: 'cancelled')
     end
-    sum
   end
 end
