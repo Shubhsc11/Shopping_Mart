@@ -50,25 +50,43 @@ class OrdersController < ApplicationController
   end
 
   def update
-    @order = current_user.orders.find(params[:id])
-    if @order.update(status: 'placed', delivery_detail_id: params[:delivery_detail_id])
-      begin
-        current_user.update(points: current_user.points - @order.sub_total)
-      rescue ActiveRecord::RecordInvalid => e
-        @order.update(status: 'draft')
-        redirect_to order_path(@order), alert: t('messages.order.place_failure') + ": #{e.message}"
-        return
-      end
+    @order = if current_user.owner?
+               Order.joins(:products).where(products: { user_id: current_user.id }, id: params[:id]).distinct.first
+             else
+               current_user.orders.find_by(id: params[:id])
+             end
 
-      @order.order_items.each do |order_item|
-        product = Product.find(order_item.product_id)
-        product.update(p_qty: product.p_qty - order_item.item_qty)
+    if @order.nil?
+      redirect_to orders_path, alert: t('messages.order.not_found')
+      return
+    end
+
+    if current_user.owner?
+      if @order.update(status: params[:order][:status])
+        redirect_to order_path(@order), notice: t('messages.order.status_updated')
+      else
+        redirect_to order_path(@order), alert: t('messages.order.status_update_failed')
       end
-      # Clear cart only after successful placement
-      current_user.cart&.cart_items&.destroy_all
-      redirect_to order_path(@order), notice: t('messages.order.place_success')
     else
-      redirect_to root_path, alert: t('messages.order.place_failure')
+      if @order.update(status: 'placed', delivery_detail_id: params[:delivery_detail_id])
+        begin
+          current_user.update(points: current_user.points - @order.sub_total)
+        rescue ActiveRecord::RecordInvalid => e
+          @order.update(status: 'draft')
+          redirect_to order_path(@order), alert: t('messages.order.place_failure') + ": #{e.message}"
+          return
+        end
+
+        @order.order_items.each do |order_item|
+          product = Product.find(order_item.product_id)
+          product.update(p_qty: product.p_qty - order_item.item_qty)
+        end
+        # Clear cart only after successful placement
+        current_user.cart&.cart_items&.destroy_all
+        redirect_to order_path(@order), notice: t('messages.order.place_success')
+      else
+        redirect_to root_path, alert: t('messages.order.place_failure')
+      end
     end
   end
 

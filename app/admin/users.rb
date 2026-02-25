@@ -3,7 +3,7 @@
 ActiveAdmin.register User do
   # menu priority: 2
   permit_params do
-    %i[email password password_confirmation roles]
+    %i[email password password_confirmation roles points]
   end
 
   filter :email
@@ -19,16 +19,18 @@ ActiveAdmin.register User do
     column 'User Role', :roles do |user|
       user.roles.humanize
     end
+    column 'Points', :points
 
     actions
   end
 
-  form do |_f|
+  form do |f|
     inputs 'Details' do
       input :email
       input :password
       input :password_confirmation
       input :roles, as: :select, collection: User.roles.keys.map { |role| [role.humanize, role] }
+      input :points if f.object.customer?
     end
     actions
   end

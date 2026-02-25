@@ -3,7 +3,7 @@
 ActiveAdmin.register User, as: 'Customer' do
   menu parent: 'Users', priority: 2
   permit_params do
-    %i[email password password_confirmation roles]
+    %i[email password password_confirmation roles points]
   end
 
   filter :email
@@ -24,6 +24,7 @@ ActiveAdmin.register User, as: 'Customer' do
   form do |_f|
     inputs 'Details' do
       input :email
+      input :points
       input :password
       input :password_confirmation
     end

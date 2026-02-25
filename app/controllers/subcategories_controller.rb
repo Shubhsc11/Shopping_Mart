@@ -15,6 +15,15 @@ class SubcategoriesController < ApplicationController
     @products = @subcategory.products
   end
 
+  def index
+    @subcategories = if params[:category_id].present?
+                       Subcategory.where(category_id: params[:category_id])
+                     else
+                       Subcategory.all
+                     end
+    render json: @subcategories
+  end
+
   private
 
   def set_subcategory
