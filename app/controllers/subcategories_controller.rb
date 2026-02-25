@@ -4,7 +4,12 @@ class SubcategoriesController < ApplicationController
   before_action :set_subcategory, only: :show
 
   def index
-    @subcategories = Subcategory.all
+    @subcategories = if params[:category_id].present?
+                       Subcategory.where(category_id: params[:category_id])
+                     else
+                       Subcategory.all
+                     end
+
     respond_to do |format|
       format.html
       format.json { render json: @subcategories }
@@ -13,15 +18,6 @@ class SubcategoriesController < ApplicationController
 
   def show
     @products = @subcategory.products
-  end
-
-  def index
-    @subcategories = if params[:category_id].present?
-                       Subcategory.where(category_id: params[:category_id])
-                     else
-                       Subcategory.all
-                     end
-    render json: @subcategories
   end
 
   private

@@ -48,7 +48,9 @@ ActiveAdmin.register Product do
       input :p_price, label: 'Product Price'
       input :p_qty, label: 'Product Quantity'
       input :category_id, as: :select, collection: Category.all.map { |c| [c.category_name, c.id] }, label: 'Category'
-      input :subcategory_id, as: :select, collection: Subcategory.all.map { |s| [s.subcategory_name, s.id] }, label: 'Subcategory'
+      input :subcategory_id, as: :select, collection: Subcategory.all.map { |s|
+        [s.subcategory_name, s.id]
+      }, label: 'Subcategory'
       input :user_id, as: :select, collection: User.owner.map { |u| [u.email, u.id] }, label: 'User'
     end
     actions
