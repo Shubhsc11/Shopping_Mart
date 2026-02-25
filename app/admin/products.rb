@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 ActiveAdmin.register Product do
-  actions :all, except: %i[new edit destroy]
-
   filter :user_id, as: :select, collection: lambda {
     User.all.map do |u|
       [u.email, u.id]
@@ -41,6 +39,20 @@ ActiveAdmin.register Product do
       user ? link_to(user.email, admin_user_path(user.id)) : '-'
     end
 
+    actions
+  end
+
+  form do |_f|
+    inputs 'Details' do
+      input :p_name, label: 'Product Name'
+      input :p_price, label: 'Product Price'
+      input :p_qty, label: 'Product Quantity'
+      input :category_id, as: :select, collection: Category.all.map { |c| [c.category_name, c.id] }, label: 'Category'
+      input :subcategory_id, as: :select, collection: Subcategory.all.map { |s|
+        [s.subcategory_name, s.id]
+      }, label: 'Subcategory'
+      input :user_id, as: :select, collection: User.owner.map { |u| [u.email, u.id] }, label: 'User'
+    end
     actions
   end
 end

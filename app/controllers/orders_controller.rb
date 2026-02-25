@@ -50,25 +50,13 @@ class OrdersController < ApplicationController
   end
 
   def update
-    @order = current_user.orders.find(params[:id])
-    if @order.update(status: 'placed', delivery_detail_id: params[:delivery_detail_id])
-      begin
-        current_user.update(points: current_user.points - @order.sub_total)
-      rescue ActiveRecord::RecordInvalid => e
-        @order.update(status: 'draft')
-        redirect_to order_path(@order), alert: t('messages.order.place_failure') + ": #{e.message}"
-        return
-      end
+    @order = find_order
+    return redirect_to orders_path, alert: t('messages.order.not_found') if @order.nil?
 
-      @order.order_items.each do |order_item|
-        product = Product.find(order_item.product_id)
-        product.update(p_qty: product.p_qty - order_item.item_qty)
-      end
-      # Clear cart only after successful placement
-      current_user.cart&.cart_items&.destroy_all
-      redirect_to order_path(@order), notice: t('messages.order.place_success')
+    if current_user.owner?
+      update_order_status
     else
-      redirect_to root_path, alert: t('messages.order.place_failure')
+      process_order_placement
     end
   end
 
@@ -88,6 +76,32 @@ class OrdersController < ApplicationController
   end
 
   private
+
+  def find_order
+    if current_user.owner?
+      Order.joins(:products).where(products: { user_id: current_user.id }, id: params[:id]).distinct.first
+    else
+      current_user.orders.find_by(id: params[:id])
+    end
+  end
+
+  def update_order_status
+    if @order.update(status: params[:order][:status])
+      redirect_to order_path(@order), notice: t('messages.order.status_updated')
+    else
+      redirect_to order_path(@order), alert: t('messages.order.status_update_failed')
+    end
+  end
+
+  def process_order_placement
+    @order.place!(params[:delivery_detail_id])
+    current_user.cart&.cart_items&.destroy_all
+    redirect_to order_path(@order), notice: t('messages.order.place_success')
+  rescue ActiveRecord::RecordInvalid => e
+    redirect_to order_path(@order), alert: "#{t('messages.order.place_failure')}: #{e.message}"
+  rescue StandardError
+    redirect_to root_path, alert: t('messages.order.place_failure')
+  end
 
   def order_params
     params.require(:order).permit(:user_id, :status)

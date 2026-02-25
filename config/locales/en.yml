@@ -45,6 +45,8 @@ en:
       cancel_success: 'Order was successfully cancelled.'
       cancel_failure: 'Cannot cancel order. It may have already been cancelled or is not eligible for cancellation.'
       not_found: 'Order not found'
+      status_updated: 'Order status updated successfully.'
+      status_update_failed: 'Failed to update order status.'
 
     users:
       points_added: 'Points added successfully.'

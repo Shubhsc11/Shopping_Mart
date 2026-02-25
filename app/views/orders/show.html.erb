@@ -82,10 +82,12 @@
       <div class="card-body">
         <p class="mb-2"><strong>Email:</strong> <%= @order.user.email %></p>
         <p class="mb-2"><strong>Role:</strong> <%= @order.user.roles.humanize %></p>
-        <hr>
-        <p class="mb-0 text-success fw-bold">
-          <i class="fa fa-money me-1"></i> Available Points: $<%= @available_points %>
-        </p>
+        <% if current_user.customer? %>
+          <hr>
+          <p class="mb-0 text-success fw-bold">
+            <i class="fa fa-money me-1"></i> Available Points: $<%= @available_points %>
+          </p>
+        <% end %>
       </div>
     </div>
 
@@ -103,7 +105,23 @@
     <% end %>
 
     <div class="d-grid gap-2">
-      <% if !current_user.owner? && (@order.draft? || @order.placed? || @order.confirmed?) %>
+      <% if current_user.owner? %>
+        <div class="card shadow-sm border-0 rounded-3 mb-4">
+          <div class="card-header bg-white py-3 border-bottom">
+            <h5 class="mb-0 fw-bold"><i class="fa fa-edit me-2 text-primary"></i> Update Status</h5>
+          </div>
+          <div class="card-body">
+            <%= form_with model: @order, method: :patch, local: true do |f| %>
+              <div class="mb-3">
+                <%= f.select :status, Order.statuses.keys.map { |s| [s.humanize, s] }, {}, { class: "form-select rounded-pill px-3 shadow-sm" } %>
+              </div>
+              <%= f.submit "Update Status", class: "btn btn-primary rounded-pill w-100 shadow-sm" %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+
+      <% if current_user.customer? && (@order.draft? || @order.placed? || @order.confirmed?) %>
         <%= button_to order_path(@order), method: :delete, data: { confirm: 'Are you sure you want to cancel this order?' }, class: "btn btn-outline-danger rounded-pill py-2 shadow-sm mb-2 w-100" do %>
           <i class="fa fa-times me-2"></i> Cancel Order
         <% end %>

@@ -1,67 +1,103 @@
-<head>
-  <style type="text/css">
-    h3{
-      font-size: 15pt;
-      font-family: sans-serif;
-    }
-    #div1{
-      background-color: lightgreen;
-      padding: 20px;
-      margin: 25px; 
-      width: 50%;
-      border-radius: 15px;
-    }
-
-    #div2{
-      background-color: lightgreen;
-      padding: 20px;
-      margin: 25px; 
-      width: 50%;
-      border-radius: 15px;
-    }
-  </style>
-</head>
-
-<body>
-  <center>
-    <div class="container-fluid" id="div1">
-      <h1 style="text-decoration-line: underline;">Product Details</h1>
-      <br>  
-
-      <h3>Product Name => <%= @product.p_name %></h3>
-
-      <h3>Product Price => <%= @product.p_price %></h3>
-
-      <h3>Product Qty. => <%= @product.p_qty %></h3>
-      <br>
-    </div>
-
-  <br>
-  <br>
-
-    <div class="container" id="div2">
-      <div class="row">
-        <div class="col sm-3">
-         <h4><%= link_to "Edit Product", edit_product_path(@product) %></h4>
+<div class="container py-5">
+  <div class="row g-5">
+    <!-- Product Gallery/Image Section -->
+    <div class="col-lg-6">
+      <div class="card border-0 shadow-lg rounded-4 overflow-hidden h-100 bg-white d-flex align-items-center justify-content-center p-5" style="min-height: 400px;">
+        <i class="fa fa-shopping-bag text-success opacity-25" style="font-size: 15rem;"></i>
+        <div class="position-absolute bottom-0 start-0 w-100 p-4 bg-gradient-dark text-white text-center">
+          <h2 class="fw-bold mb-0 text-dark"><%= @product.p_name %></h2>
         </div>
-        <hr>
-
-        <div class="col sm-3">
-          <h4><%= link_to "Delete Product", product_path(@product), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %></h4>
-        </div>
-        <hr>
-
-        <div class="col sm-3">
-          <h4><%= link_to "List of Product", products_path %></h4>
-        </div>
-        <hr>
-        <div class="col sm-3">
-          <h4><%= link_to 'Back', root_path %></h4>
-        </div>
-        <hr>
       </div>
     </div>
-  </center>
-  
-</body>
 
+    <!-- Product Details Section -->
+    <div class="col-lg-6">
+      <div class="product-info-card p-4">
+        <div class="mb-4">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-2">
+              <li class="breadcrumb-item"><a href="<%= root_path %>" class="text-success text-decoration-none">Home</a></li>
+              <li class="breadcrumb-item"><%= @product.category&.category_name %></li>
+              <li class="breadcrumb-item active"><%= @product.subcategory&.subcategory_name %></li>
+            </ol>
+          </nav>
+          <h1 class="display-5 fw-bold text-dark mb-2"><%= @product.p_name %></h1>
+          
+          <div class="d-flex gap-2 mb-4">
+            <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 rounded-pill px-3 py-2">
+              <i class="fa fa-tag me-1"></i> <%= @product.category&.category_name %>
+            </span>
+            <span class="badge bg-info bg-opacity-10 text-info border border-info border-opacity-25 rounded-pill px-3 py-2">
+              <i class="fa fa-folder-open me-1"></i> <%= @product.subcategory&.subcategory_name %>
+            </span>
+          </div>
+        </div>
+
+        <div class="mb-5">
+          <h2 class="text-success fw-bold display-6 mb-3">$<%= @product.p_price %></h2>
+          <div class="d-flex align-items-center text-muted mb-4">
+            <i class="fa fa-boxes me-2"></i>
+            <span class="me-3">Availability: <strong><%= @product.p_qty > 0 ? 'In Stock' : 'Out of Stock' %></strong></span>
+            <span class="badge bg-secondary bg-opacity-10 text-secondary rounded-pill"><%= @product.p_qty %> units remaining</span>
+          </div>
+          <p class="text-muted leading-relaxed">
+            Experience premium quality with our <%= @product.p_name %>. Perfectly categorized under <%= @product.category&.category_name %>, this product offers exceptional value and style. 
+          </p>
+        </div>
+
+        <hr class="my-5 opacity-10">
+
+        <div class="d-flex flex-wrap gap-3">
+          <% if current_user == @product.user %>
+            <%= link_to edit_product_path(@product), class: "btn btn-dark btn-lg rounded-pill px-5 py-3 shadow-sm hover-up flex-grow-1" do %>
+              <i class="fa fa-edit me-2"></i> Edit Product
+            <% end %>
+            <%= button_to product_path(@product), method: :delete, data: { confirm: "Are you sure you want to remove this product?" }, class: "btn btn-outline-danger btn-lg rounded-pill px-4 py-3 hover-up" do %>
+              <i class="fa fa-trash"></i>
+            <% end %>
+          <% else %>
+             <%= button_to orders_path(product_id: @product.id), class: "btn btn-success btn-lg rounded-pill px-5 py-3 shadow-sm hover-up flex-grow-1" do %>
+               <i class="fa fa-shopping-cart me-2"></i> Add to Cart
+             <% end %>
+          <% end %>
+        </div>
+
+        <div class="mt-4 text-center">
+          <%= link_to products_path, class: "text-muted text-decoration-none hover-dark small" do %>
+            <i class="fa fa-arrow-left me-1"></i> Back to Catalog
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .product-info-card {
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(10px);
+    border-radius: 2rem;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+  }
+  
+  .hover-up {
+    transition: all 0.3s ease;
+  }
+  
+  .hover-up:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+  }
+
+  .hover-dark:hover {
+    color: #000 !important;
+  }
+
+  .bg-gradient-dark {
+    background: linear-gradient(transparent, rgba(0,0,0,0.05));
+  }
+
+  .leading-relaxed {
+    line-height: 1.8;
+  }
+</style>
